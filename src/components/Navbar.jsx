@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { MoreVertical } from "lucide-react";
 
 export default function Navbar({ isAdmin = false }) {
@@ -28,34 +28,34 @@ export default function Navbar({ isAdmin = false }) {
   };
 
   return (
-    <nav className="bg-blue-600 text-white p-4 shadow-md relative">
+    <nav className="bg-gradient-to-r from-blue-500 to-purple-500 text-white p-4 shadow-md">
       <div className="max-w-6xl mx-auto flex justify-between items-center">
-        <span className="text-xl font-semibold">
-          Campus Care Management System
+        <span className="text-xl font-bold tracking-wide">
+          Campus Care
         </span>
 
-        {/* Three-dot menu */}
         <div className="relative">
           <button
             onClick={() => setMenuOpen((prev) => !prev)}
-            className="p-2 hover:bg-blue-700 rounded"
+            className="p-2 rounded-full hover:bg-white hover:text-purple-600 transition-all"
+            aria-label="Open menu"
           >
-            <MoreVertical size={20} />
+            <MoreVertical size={22} />
           </button>
 
           {menuOpen && (
-            <div className="absolute right-0 mt-2 bg-white text-black rounded shadow-md w-40 z-10">
+            <div className="absolute right-0 mt-2 bg-white text-gray-800 rounded-xl shadow-xl w-40 z-20 overflow-hidden animate-fade-in">
               {isAdmin ? (
                 <>
                   <button
                     onClick={() => handleMenuSelect("home")}
-                    className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                    className="w-full text-left px-4 py-2 hover:bg-purple-100"
                   >
                     Home
                   </button>
                   <button
                     onClick={() => handleMenuSelect("logout")}
-                    className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                    className="w-full text-left px-4 py-2 hover:bg-purple-100"
                   >
                     Logout
                   </button>
@@ -64,13 +64,13 @@ export default function Navbar({ isAdmin = false }) {
                 <>
                   <button
                     onClick={() => handleMenuSelect("admin")}
-                    className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                    className="w-full text-left px-4 py-2 hover:bg-purple-100"
                   >
                     Admin
                   </button>
                   <button
                     onClick={() => handleMenuSelect("logout")}
-                    className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                    className="w-full text-left px-4 py-2 hover:bg-purple-100"
                   >
                     Logout
                   </button>

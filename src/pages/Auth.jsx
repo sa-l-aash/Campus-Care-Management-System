@@ -11,7 +11,6 @@ export default function Auth() {
   const handleAuth = (e) => {
     e.preventDefault();
 
-    // Validation for signup
     if (mode === 'signup' && password !== confirmPassword) {
       alert('Passwords do not match!');
       return;
@@ -24,58 +23,56 @@ export default function Auth() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white to-gray-100">
-      <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-md text-center">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-purple-100">
+      <div className="bg-white p-10 rounded-3xl shadow-xl w-full max-w-md text-center border border-blue-200">
         <div className="flex justify-center items-center mb-6">
           <img
-            src="https://img.icons8.com/ios-filled/50/0000FF/documents.png"
+            src="https://img.icons8.com/ios-filled/50/7B61FF/documents.png"
             alt="Campus Care Icon"
-            className="h-6 w-6 mr-2"
+            className="h-8 w-8 mr-3"
           />
-          <h1 className="text-2xl font-bold text-gray-800">Campus Care</h1>
+          <h1 className="text-3xl font-bold text-blue-800">Campus Care</h1>
         </div>
 
-        <h2 className="text-xl font-semibold mb-1">Welcome</h2>
+        <h2 className="text-2xl font-semibold text-purple-700 mb-2">Welcome</h2>
         <p className="text-sm text-gray-500 mb-6">
           Sign in to your account or create a new one to get started
         </p>
 
-        {/* Tabs */}
-        <div className="flex justify-center mb-6 border border-gray-300 rounded overflow-hidden">
+        <div className="flex justify-center mb-6 border border-purple-300 rounded-lg overflow-hidden">
           <button
             onClick={() => {
               setMode('signin');
               setConfirmPassword('');
             }}
-            className={`px-4 py-2 w-1/2 ${mode === 'signin' ? 'bg-gray-200' : 'bg-white'}`}
+            className={`px-4 py-2 w-1/2 text-sm font-medium transition-all ${mode === 'signin' ? 'bg-purple-200 text-purple-900' : 'bg-white text-gray-600'}`}
           >
             Login
           </button>
           <button
             onClick={() => setMode('signup')}
-            className={`px-4 py-2 w-1/2 ${mode === 'signup' ? 'bg-gray-200' : 'bg-white'}`}
+            className={`px-4 py-2 w-1/2 text-sm font-medium transition-all ${mode === 'signup' ? 'bg-purple-200 text-purple-900' : 'bg-white text-gray-600'}`}
           >
             Register
           </button>
         </div>
 
-        {/* Form */}
         <form onSubmit={handleAuth} className="text-left">
-          <label className="block text-sm font-medium mb-1">Email</label>
+          <label className="block text-sm font-medium text-blue-800 mb-1">Email</label>
           <input
             type="email"
             placeholder="Enter your email"
-            className="w-full p-2 border border-gray-300 rounded-md mb-4"
+            className="w-full p-3 border border-purple-300 rounded-xl mb-4 focus:ring-2 focus:ring-purple-400"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
 
-          <label className="block text-sm font-medium mb-1">Password</label>
+          <label className="block text-sm font-medium text-blue-800 mb-1">Password</label>
           <input
             type="password"
             placeholder="Create a password"
-            className="w-full p-2 border border-gray-300 rounded-md mb-4"
+            className="w-full p-3 border border-purple-300 rounded-xl mb-4 focus:ring-2 focus:ring-purple-400"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -83,11 +80,11 @@ export default function Auth() {
 
           {mode === 'signup' && (
             <>
-              <label className="block text-sm font-medium mb-1">Confirm Password</label>
+              <label className="block text-sm font-medium text-blue-800 mb-1">Confirm Password</label>
               <input
                 type="password"
                 placeholder="Confirm your password"
-                className="w-full p-2 border border-gray-300 rounded-md mb-6"
+                className="w-full p-3 border border-purple-300 rounded-xl mb-6 focus:ring-2 focus:ring-purple-400"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
@@ -97,7 +94,7 @@ export default function Auth() {
 
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
+            className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 rounded-xl font-semibold hover:from-blue-600 hover:to-purple-600 transition-all shadow-md"
           >
             {mode === 'signup' ? 'Create Account' : 'Login'}
           </button>

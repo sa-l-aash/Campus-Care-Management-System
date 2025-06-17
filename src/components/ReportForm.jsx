@@ -35,42 +35,51 @@ export default function ReportForm() {
   };
 
   return (
-    <form id="report" onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md">
-      <h2 className="text-2xl font-semibold mb-4">Report Broken Infrastructure</h2>
-      <div className="mb-4">
-        <label className="block font-medium">Location</label>
+    <form
+      id="report"
+      onSubmit={handleSubmit}
+      className="space-y-6"
+    >
+      <div>
+        <label className="block text-blue-800 font-medium mb-1">Location</label>
         <input
           type="text"
           name="location"
           value={formData.location}
           onChange={handleChange}
-          className="mt-1 p-2 border rounded w-full"
+          className="w-full p-3 border border-purple-300 rounded-xl focus:ring-2 focus:ring-purple-400"
           required
         />
       </div>
-      <div className="mb-4">
-        <label className="block font-medium">Description</label>
+
+      <div>
+        <label className="block text-blue-800 font-medium mb-1">Description</label>
         <textarea
           name="description"
           value={formData.description}
           onChange={handleChange}
-          className="mt-1 p-2 border rounded w-full"
+          className="w-full p-3 border border-purple-300 rounded-xl focus:ring-2 focus:ring-purple-400"
           rows="3"
           required
         />
       </div>
-      <div className="mb-4">
-        <label className="block font-medium">Upload Image</label>
+
+      <div>
+        <label className="block text-blue-800 font-medium mb-1">Upload Image</label>
         <input
           type="file"
           name="image"
           accept="image/*"
           onChange={handleChange}
-          className="mt-1"
+          className="w-full text-sm"
           required
         />
       </div>
-      <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+
+      <button
+        type="submit"
+        className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 rounded-xl font-semibold hover:from-blue-600 hover:to-purple-600 transition-all shadow-md"
+      >
         Submit Report
       </button>
     </form>
