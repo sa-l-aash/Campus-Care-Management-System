@@ -5,6 +5,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import ReportForm from "./components/ReportForm";
 import ComplaintForm from "./components/ComplaintForm";
+// Auth page
+import Auth from "./pages/Auth";
 
 // Admin page
 import AdminDashboard from "./pages/AdminDashboard";
@@ -29,6 +31,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/admin" element={<AdminDashboard />} />
+         <Route path="/auth" element={<Auth />} />
       </Routes>
     </Router>
   );
