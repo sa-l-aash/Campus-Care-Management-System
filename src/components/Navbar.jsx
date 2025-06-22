@@ -28,7 +28,7 @@ export default function Navbar({ isAdmin = false }) {
   };
 
   return (
-    <nav className="bg-gradient-to-r from-blue-500 to-purple-500 text-white p-4 shadow-md">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-500 to-purple-500 text-white p-4 shadow-md">
       <div className="max-w-6xl mx-auto flex justify-between items-center">
         <span className="text-xl font-bold tracking-wide">
           Campus Care
