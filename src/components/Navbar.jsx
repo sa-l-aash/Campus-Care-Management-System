@@ -30,7 +30,12 @@ export default function Navbar({ isAdmin = false }) {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-500 to-purple-500 text-white p-4 shadow-md">
       <div className="max-w-6xl mx-auto flex justify-between items-center">
-        <span className="text-xl font-bold tracking-wide">
+        <span className="text-xl font-bold tracking-wide flex items-center gap-2">
+          <img
+            src="/icons8-university-50-2.png" // campus icon path from /public
+            alt="Campus Icon"
+            className="w-6 h-6"
+          />
           Campus Care
         </span>
 
