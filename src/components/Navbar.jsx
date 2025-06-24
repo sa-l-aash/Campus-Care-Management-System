@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { MoreVertical } from "lucide-react";
+import { User } from "lucide-react";
 
 export default function Navbar({ isAdmin = false }) {
   const navigate = useNavigate();
@@ -27,62 +27,83 @@ export default function Navbar({ isAdmin = false }) {
     }
   };
 
+  const handleReportClick = () => {
+    navigate("/report");
+  };
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-500 to-purple-500 text-white p-4 shadow-md">
       <div className="max-w-6xl mx-auto flex justify-between items-center">
+        {/* Logo */}
         <span className="text-xl font-bold tracking-wide flex items-center gap-2">
           <img
-            src="/icons8-university-50-2.png" // campus icon path from /public
+            src="/icons8-university-50-2.png"
             alt="Campus Icon"
             className="w-6 h-6"
           />
           Campus Care
         </span>
 
-        <div className="relative">
+        {/* Right section: Report + Profile */}
+        <div className="flex items-center gap-4">
+          {/* + Report Issue Button */}
           <button
-            onClick={() => setMenuOpen((prev) => !prev)}
-            className="p-2 rounded-full hover:bg-white hover:text-purple-600 transition-all"
-            aria-label="Open menu"
+            onClick={handleReportClick}
+            className="flex items-center gap-2 px-4 py-2 bg-white text-purple-600 rounded-full font-medium shadow hover:scale-105 transition-all duration-300"
           >
-            <MoreVertical size={22} />
+            <span className="text-xl font-bold">+</span>
+            Report Issue
           </button>
 
-          {menuOpen && (
-            <div className="absolute right-0 mt-2 bg-white text-gray-800 rounded-xl shadow-xl w-40 z-20 overflow-hidden animate-fade-in">
-              {isAdmin ? (
-                <>
-                  <button
-                    onClick={() => handleMenuSelect("home")}
-                    className="w-full text-left px-4 py-2 hover:bg-purple-100"
-                  >
-                    Home
-                  </button>
-                  <button
-                    onClick={() => handleMenuSelect("logout")}
-                    className="w-full text-left px-4 py-2 hover:bg-purple-100"
-                  >
-                    Logout
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button
-                    onClick={() => handleMenuSelect("admin")}
-                    className="w-full text-left px-4 py-2 hover:bg-purple-100"
-                  >
-                    Admin
-                  </button>
-                  <button
-                    onClick={() => handleMenuSelect("logout")}
-                    className="w-full text-left px-4 py-2 hover:bg-purple-100"
-                  >
-                    Logout
-                  </button>
-                </>
-              )}
-            </div>
-          )}
+          {/* Profile-style menu button */}
+          <div className="relative">
+            <button
+              onClick={() => setMenuOpen((prev) => !prev)}
+              className="w-10 h-10 rounded-full bg-white text-purple-600 flex items-center justify-center shadow-md hover:scale-105 transition-all"
+              aria-label="Profile menu"
+            >
+              <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
+                <User size={18} className="text-white" />
+              </div>
+            </button>
+
+            {/* Dropdown Menu */}
+            {menuOpen && (
+              <div className="absolute right-0 mt-2 bg-white text-gray-800 rounded-xl shadow-xl w-40 z-20 overflow-hidden animate-fade-in">
+                {isAdmin ? (
+                  <>
+                    <button
+                      onClick={() => handleMenuSelect("home")}
+                      className="w-full text-left px-4 py-2 hover:bg-purple-100"
+                    >
+                      Home
+                    </button>
+                    <button
+                      onClick={() => handleMenuSelect("logout")}
+                      className="w-full text-left px-4 py-2 hover:bg-purple-100"
+                    >
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => handleMenuSelect("admin")}
+                      className="w-full text-left px-4 py-2 hover:bg-purple-100"
+                    >
+                      Admin
+                    </button>
+                    <button
+                      onClick={() => handleMenuSelect("logout")}
+                      className="w-full text-left px-4 py-2 hover:bg-purple-100"
+                    >
+                      Logout
+                    </button>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </nav>
