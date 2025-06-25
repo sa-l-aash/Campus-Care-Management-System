@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom
 // Components
 import Navbar from "./components/Navbar";
 import ReportForm from "./components/ReportForm";
+import ComplaintForm from "./components/ComplaintForm"; // ✅ Step 1
 
 // Pages
 import Auth from "./pages/Auth";
@@ -31,10 +32,11 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        {/* Wrap all pages that need Navbar */}
+        {/* Routes with Navbar */}
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/report" element={<ReportForm />} />
+          <Route path="/complaint" element={<ComplaintForm />} /> {/* ✅ Step 2 */}
         </Route>
 
         {/* Routes without Navbar */}
