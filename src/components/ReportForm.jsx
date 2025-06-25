@@ -1,6 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 
 export default function ReportForm() {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     description: "",
     location: "",
@@ -35,14 +39,23 @@ export default function ReportForm() {
   };
 
   return (
-    <div className="mt-28 max-w-5xl mx-auto bg-white p-8 rounded-2xl shadow-xl">
-      {/* Header Bar with Plain Button */}
-      <div className="flex justify-between items-center mb-6">
+    <div className="mt-28 max-w-5xl mx-auto bg-white p-8 rounded-2xl shadow-xl relative">
+      {/* Back Button (styled like ComplaintForm) */}
+      <button
+        onClick={() => navigate(-1)}
+        className="absolute top-5 left-5 bg-purple-100 text-purple-600 hover:bg-purple-200 rounded-full p-2 transition"
+        aria-label="Back"
+      >
+        <ArrowLeft size={20} />
+      </button>
+
+      {/* Header and Confidential Button */}
+      <div className="flex justify-between items-center mb-6 pt-1 pl-12 pr-4">
         <h2 className="text-2xl font-bold text-blue-900">Issue Reports</h2>
 
-        {/* Plain modern button */}
         <button
           type="button"
+          onClick={() => navigate("/complaint")}
           className="px-4 py-2 bg-white text-purple-600 border border-purple-300 rounded-full font-medium shadow hover:scale-105 transition-all duration-300"
         >
           Confidential Complaints
