@@ -51,7 +51,7 @@ export default function ReportForm() {
 
       {/* Header and Confidential Button */}
       <div className="flex justify-between items-center mb-6 pt-1 pl-12 pr-4">
-        <h2 className="text-2xl font-bold text-blue-900">Issue Reports</h2>
+        <h2 className="text-2xl font-bold text-blue-900">Damage Reports</h2>
 
         <button
           type="button"
