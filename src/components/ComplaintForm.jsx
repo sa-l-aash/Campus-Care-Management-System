@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChevronLeftCircle } from "lucide-react"; // More modern back icon
+import { ArrowLeft } from "lucide-react";
 
-export default function ReportForm() {
+export default function ComplaintForm() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -24,60 +24,71 @@ export default function ReportForm() {
     const confirmed = window.confirm(
       "⚠️ This is a private message and will only be visible to the administration.\n\nDo you want to confirm and send?"
     );
-
     if (!confirmed) return;
 
     const data = new FormData();
     data.append("description", formData.description);
-    data.append("image", formData.image);
+    if (formData.image) {
+      data.append("image", formData.image);
+    }
 
     try {
       const res = await fetch("/api/report", {
         method: "POST",
         body: data,
       });
-      alert("Report submitted!");
+
+      alert("✅ Complaint submitted successfully!");
       setFormData({ description: "", image: null });
     } catch (err) {
       console.error("Upload error", err);
+      alert("❌ Submission failed.");
     }
   };
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-md mt-24 max-w-2xl mx-auto">
-      {/* Back Icon Button */}
-      <div className="flex items-center mb-3">
+    <div className="mt-28 max-w-5xl mx-auto bg-white p-8 rounded-2xl shadow-xl relative">
+      {/* Back Button */}
+      <button
+        onClick={() => navigate(-1)}
+        className="absolute top-5 left-5 bg-purple-100 text-purple-600 hover:bg-purple-200 rounded-full p-2 transition"
+        aria-label="Back"
+      >
+        <ArrowLeft size={20} />
+      </button>
+
+      {/* Header and Optional Button */}
+      <div className="flex justify-between items-center mb-6 pt-1 pl-12 pr-4">
+        <h2 className="text-2xl font-bold text-blue-900">Confidential Complaints</h2>
+
         <button
-          onClick={() => navigate(-1)}
-          className="text-purple-600 hover:text-purple-800 transition"
-          aria-label="Go back"
+          type="button"
+          onClick={() => navigate("/report")}
+          className="px-4 py-2 bg-white text-purple-600 border border-purple-300 rounded-full font-medium shadow hover:scale-105 transition-all duration-300"
         >
-          <ChevronLeftCircle size={28} />
+          Damage Reports
         </button>
       </div>
 
-      <h2 className="text-2xl font-semibold text-blue-800 mb-5">
-        Report a Concern/Incident
-      </h2>
-
+      {/* Complaint Form */}
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Description */}
         <div>
-          <label className="block text-blue-800 font-medium mb-1">Description</label>
+          <label className="block text-blue-900 font-semibold mb-1">Description</label>
           <textarea
             name="description"
             value={formData.description}
             onChange={handleChange}
-            className="w-full p-3 border border-purple-300 rounded-xl focus:ring-2 focus:ring-purple-400"
+            className="w-full px-4 py-3 border border-purple-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400"
             rows="4"
-            placeholder="Describe the issue..."
+            placeholder="Briefly describe your complaint..."
             required
           />
         </div>
 
         {/* Image Upload */}
         <div>
-          <label className="block text-blue-800 font-medium mb-1">Upload Image</label>
+          <label className="block text-blue-900 font-semibold mb-1">Upload Image</label>
           <input
             type="file"
             name="image"
@@ -94,9 +105,9 @@ export default function ReportForm() {
         {/* Submit Button */}
         <button
           type="submit"
-          className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 rounded-xl font-semibold hover:from-blue-600 hover:to-purple-600 transition-all shadow-md"
+          className="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl font-bold shadow hover:from-blue-600 hover:to-purple-600 transition-all"
         >
-          Submit Report
+          Submit Complaint
         </button>
       </form>
     </div>
