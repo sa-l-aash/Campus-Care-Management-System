@@ -27,7 +27,7 @@ export default function Auth() {
       <div className="bg-white p-10 rounded-3xl shadow-xl w-full max-w-md text-center border border-blue-200">
         <div className="flex justify-center items-center mb-6">
           <img
-            src="https://img.icons8.com/ios-filled/50/7B61FF/documents.png"
+            src="/icons8-university-50-2.png"
             alt="Campus Care Icon"
             className="h-8 w-8 mr-3"
           />
