@@ -9,6 +9,7 @@ import ComplaintForm from "./components/ComplaintForm"; // ✅ Step 1
 // Pages
 import Auth from "./pages/Auth";
 import AdminDashboard from "./pages/AdminDashboard";
+import { ToastContainer } from "react-toastify";
 
 // Layout with Navbar
 const Layout = () => (
@@ -43,6 +44,7 @@ export default function App() {
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/auth" element={<Auth />} />
       </Routes>
+      <ToastContainer/>
     </Router>
   );
 }
