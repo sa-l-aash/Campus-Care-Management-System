@@ -31,28 +31,36 @@ export default function Navbar({ isAdmin = false }) {
     navigate("/report");
   };
 
+  const handleHomeClick = () => {
+    navigate("/");
+  };
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-500 to-purple-500 text-white p-4 shadow-md">
       <div className="max-w-6xl mx-auto flex justify-between items-center">
-        {/* Clickable Logo */}
-        <button
-          onClick={() => navigate("/")}
-          className="text-xl font-bold tracking-wide flex items-center gap-2 focus:outline-none"
-        >
-          <img
-            src="/icons8-university-50-2.png"
-            alt="Campus Icon"
-            className="w-6 h-6"
-          />
-          Campus Care
-        </button>
+        {/* Left section: Logo + Home Button */}
+        <div className="flex items-center gap-4">
+          {/* Logo (also clickable) */}
+          <button
+            onClick={handleHomeClick}
+            className="text-xl font-bold tracking-wide flex items-center gap-2 focus:outline-none hover:scale-105 transition-all"
+          >
+            <img
+              src="/icons8-university-50-2.png"
+              alt="Campus Icon"
+              className="w-6 h-6"
+            />
+            Campus Care
+          </button>
+
+        </div>
 
         {/* Right section: Report + Profile */}
         <div className="flex items-center gap-4">
-          {/* + Report Issue Button */}
+          {/* Report Issue Button */}
           <button
             onClick={handleReportClick}
-            className="flex items-center gap-2 px-4 py-2 bg-white text-purple-600 rounded-full font-medium shadow hover:scale-105 transition-all duration-300"
+            className="flex items-center gap-2 px-4 py-2 bg-white text-purple-600 rounded-full font-medium shadow hover:scale-105 transition-all duration-300 focus:outline-none active:scale-100"
           >
             <span className="text-xl font-bold">+</span>
             Report Issue
@@ -62,7 +70,7 @@ export default function Navbar({ isAdmin = false }) {
           <div className="relative">
             <button
               onClick={() => setMenuOpen((prev) => !prev)}
-              className="w-10 h-10 rounded-full bg-white text-purple-600 flex items-center justify-center shadow-md hover:scale-105 transition-all"
+              className="w-10 h-10 rounded-full bg-white text-purple-600 flex items-center justify-center shadow-md hover:scale-105 transition-all focus:outline-none active:scale-100"
               aria-label="Profile menu"
             >
               <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
