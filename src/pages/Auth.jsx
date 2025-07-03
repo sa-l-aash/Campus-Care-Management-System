@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { auth } from '../firebase';
+import {
+    createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
 
 export default function Auth() {
   const [email, setEmail] = useState('');
@@ -8,17 +13,28 @@ export default function Auth() {
   const [mode, setMode] = useState('signup'); // 'signin' or 'signup'
   const navigate = useNavigate();
 
-  const handleAuth = (e) => {
+  const handleAuth = async (e) => {
     e.preventDefault();
 
     if (mode === 'signup' && password !== confirmPassword) {
-      alert('Passwords do not match!');
+      alert('❌ Passwords do not match!');
       return;
     }
 
-    if (email && password) {
-      alert(`${mode === 'signin' ? 'Signed in' : 'Signed up'} successfully!`);
-      navigate('/');
+    try {
+      if (mode === 'signup') {
+        // Sign up user
+        await createUserWithEmailAndPassword(auth, email, password);
+        alert('✅ Account created successfully!');
+      } else {
+        // Sign in user
+        await signInWithEmailAndPassword(auth, email, password);
+        
+      }
+      navigate('/'); // redirect after success
+    } catch (error) {
+      console.error(error);
+      alert(`❌ ${error.message}`);
     }
   };
 
