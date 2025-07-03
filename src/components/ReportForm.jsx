@@ -21,26 +21,33 @@ export default function ReportForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const data = new FormData();
     data.append("description", formData.description);
     data.append("location", formData.location);
     data.append("image", formData.image);
 
     try {
-      const res = await fetch("/api/report", {
+      const res = await fetch("/api/reports", {
         method: "POST",
         body: data,
       });
-      alert("Report submitted!");
-      setFormData({ description: "", location: "", image: null });
+
+      if (res.ok) {
+        alert("✅ Report submitted successfully!");
+        setFormData({ description: "", location: "", image: null });
+      } else {
+        alert("❌ Failed to submit the report. Please try again.");
+      }
     } catch (err) {
       console.error("Upload error", err);
+      alert("❌ Server error while submitting the report.");
     }
   };
 
   return (
     <div className="mt-28 max-w-5xl mx-auto bg-white p-8 rounded-2xl shadow-xl relative">
-      {/* Back Button (styled like ComplaintForm) */}
+      {/* Back Button */}
       <button
         onClick={() => navigate(-1)}
         className="absolute top-5 left-5 bg-purple-100 text-purple-600 hover:bg-purple-200 rounded-full p-2 transition"
@@ -105,7 +112,6 @@ export default function ReportForm() {
                        file:text-sm file:font-semibold
                        file:bg-purple-50 file:text-purple-700
                        hover:file:bg-purple-100"
-            required
           />
         </div>
 
