@@ -2,7 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const connectDB = require("./db");
-const reportRoutes = require("./routes/reportRoutes"); // ✅ Import routes
+const reportRoutes = require("./routes/reportRoutes"); // ✅ Import report routes
+const complaintRoutes = require("./routes/complaintRoutes"); // ✅ Import complaint routes
 
 dotenv.config(); // ✅ Load .env variables
 
@@ -18,6 +19,7 @@ app.use(express.urlencoded({ extended: true })); // handle form data
 
 // ✅ Mount API routes
 app.use("/api/reports", reportRoutes);
+app.use("/api/complaints", complaintRoutes); // ✅ Register complaint routes
 
 // ✅ Example test route
 app.get("/", (req, res) => {
