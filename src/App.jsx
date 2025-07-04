@@ -13,11 +13,14 @@ import ReportForm from "./components/ReportForm";
 import ComplaintForm from "./components/ComplaintForm";
 
 // Pages
+import Home from "./pages/Home"; // ✅ Use actual Home.jsx
 import Auth from "./pages/Auth";
 import AdminDashboard from "./pages/AdminDashboard";
-import { ToastContainer } from "react-toastify";
 
-// Layout with Navbar
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // ✅ Optional: Add if you want default styles
+
+// Layout that includes the Navbar
 const Layout = () => (
   <div className="min-h-screen bg-gray-100">
     <Navbar />
@@ -27,32 +30,25 @@ const Layout = () => (
   </div>
 );
 
-// Home Page Content (now mapped to /home)
-const Home = () => (
-  <div>
-    <h1 className="text-3xl font-bold text-center mb-8">Campus Care</h1>
-  </div>
-);
-
 export default function App() {
   return (
     <Router>
       <Routes>
-        {/* ✅ Redirect "/" to "/auth" initially */}
+        {/* 🔁 Redirect base path to /auth */}
         <Route path="/" element={<Navigate to="/auth" replace />} />
 
-
-        {/* Routes with Navbar */}
+        {/* 🔒 Routes with Navbar */}
         <Route element={<Layout />}>
-          <Route path="/home" element={<Home />} /> {/* ✅ Home route added */}
+          <Route path="/home" element={<Home />} />
           <Route path="/report" element={<ReportForm />} />
           <Route path="/complaint" element={<ComplaintForm />} />
         </Route>
 
-        {/* Routes without Navbar */}
-        <Route path="/admin" element={<AdminDashboard />} />
+        {/* 🔓 Routes without Navbar */}
         <Route path="/auth" element={<Auth />} />
+        <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
+
       <ToastContainer />
     </Router>
   );
