@@ -41,6 +41,7 @@ export default function App() {
         {/* ✅ Redirect "/" to "/auth" initially */}
         <Route path="/" element={<Navigate to="/auth" replace />} />
 
+
         {/* Routes with Navbar */}
         <Route element={<Layout />}>
           <Route path="/home" element={<Home />} /> {/* ✅ Home route added */}

@@ -23,7 +23,7 @@ export default function Navbar({ isAdmin = false }) {
     } else if (action === "logout") {
       navigate("/auth");
     } else if (action === "home") {
-      navigate("/");
+      navigate("/home");
     }
   };
 
@@ -32,7 +32,7 @@ export default function Navbar({ isAdmin = false }) {
   };
 
   const handleHomeClick = () => {
-    navigate("/");
+    navigate("/home");
   };
 
   return (
