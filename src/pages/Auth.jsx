@@ -7,15 +7,17 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from 'firebase/auth';
+import { Eye, EyeOff } from 'lucide-react';
 
 export default function Auth() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [mode, setMode] = useState('signup'); // 'signin' or 'signup'
   const navigate = useNavigate();
 
-  // Handle email/password signup or login
   const handleAuth = async (e) => {
     e.preventDefault();
 
@@ -32,20 +34,19 @@ export default function Auth() {
         await signInWithEmailAndPassword(auth, email, password);
         console.log('✅ Signed in successfully!');
       }
-      navigate('/home'); // Redirect after login or signup
+      navigate('/home');
     } catch (error) {
       console.error('❌ Auth error:', error.message);
-      alert(error.message); // Show error to user
+      alert(error.message);
     }
   };
 
-  // Handle Google Sign-In
   const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
       console.log('✅ Signed in with Google!');
-      navigate('/home'); // Redirect after Google Sign-In
+      navigate('/home');
     } catch (error) {
       console.error('❌ Google Sign-In Error:', error.message);
       alert(error.message);
@@ -111,28 +112,46 @@ export default function Auth() {
           <label className="block text-sm font-medium text-blue-800 mb-1">
             Password
           </label>
-          <input
-            type="password"
-            placeholder="Enter your password"
-            className="w-full p-3 border border-purple-300 rounded-xl mb-4 focus:ring-2 focus:ring-purple-400"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <div className="relative mb-4">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              placeholder="Enter your password"
+              className="w-full p-3 border border-purple-300 rounded-xl focus:ring-2 focus:ring-purple-400 pr-10"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500"
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
 
           {mode === 'signup' && (
             <>
               <label className="block text-sm font-medium text-blue-800 mb-1">
                 Confirm Password
               </label>
-              <input
-                type="password"
-                placeholder="Confirm your password"
-                className="w-full p-3 border border-purple-300 rounded-xl mb-6 focus:ring-2 focus:ring-purple-400"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-              />
+              <div className="relative mb-6">
+                <input
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  placeholder="Confirm your password"
+                  className="w-full p-3 border border-purple-300 rounded-xl focus:ring-2 focus:ring-purple-400 pr-10"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500"
+                >
+                  {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
             </>
           )}
 
@@ -144,7 +163,7 @@ export default function Auth() {
           </button>
         </form>
 
-        {/* Google Sign-In Button */}
+        {/* Google Sign-In */}
         <div className="mt-4">
           <p className="text-gray-500 text-sm mb-2">Or</p>
           <button
