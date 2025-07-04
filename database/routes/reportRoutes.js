@@ -12,7 +12,6 @@ router.post("/", upload.single("image"), async (req, res) => {
   try {
     const { description, location } = req.body;
 
-    // Prepare new report data
     const newReport = new Report({
       description,
       location,
@@ -22,6 +21,7 @@ router.post("/", upload.single("image"), async (req, res) => {
             contentType: req.file.mimetype,
           }
         : undefined,
+      status: "pending", // Default status
     });
 
     await newReport.save();
@@ -40,6 +40,38 @@ router.get("/", async (req, res) => {
   } catch (err) {
     console.error("Error fetching reports:", err);
     res.status(500).json({ error: "❌ Error fetching reports" });
+  }
+});
+
+// PATCH mark report as resolved
+router.patch("/:id/status", async (req, res) => {
+  try {
+    const updated = await Report.findByIdAndUpdate(
+      req.params.id,
+      { status: "resolved" },
+      { new: true }
+    );
+    if (!updated) {
+      return res.status(404).json({ error: "Report not found" });
+    }
+    res.json({ message: "✅ Report marked as resolved", report: updated });
+  } catch (err) {
+    console.error("Error updating report status:", err);
+    res.status(500).json({ error: "❌ Error updating status" });
+  }
+});
+
+// DELETE a report by ID
+router.delete("/:id", async (req, res) => {
+  try {
+    const deletedReport = await Report.findByIdAndDelete(req.params.id);
+    if (!deletedReport) {
+      return res.status(404).json({ error: "Report not found" });
+    }
+    res.json({ message: "✅ Report deleted successfully" });
+  } catch (err) {
+    console.error("Error deleting report:", err);
+    res.status(500).json({ error: "❌ Error deleting report" });
   }
 });
 
