@@ -1,25 +1,64 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import ReportForm from "../components/ReportForm";
 import ComplaintForm from "../components/ComplaintForm";
 
 export default function Home() {
+  const [reports, setReports] = useState([]);
+
+  useEffect(() => {
+    const fetchReports = async () => {
+      try {
+        const res = await fetch("/api/reports");
+        const data = await res.json();
+        setReports(data);
+      } catch (err) {
+        console.error("❌ Failed to fetch reports:", err);
+      }
+    };
+
+    fetchReports();
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-white">
       <Navbar />
-      <div className="p-6 max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold text-center text-blue-800 mb-10">
-          Campus Care
-        </h1>
+      <div className="pt-24 px-6 max-w-5xl mx-auto">
+        {/* 🔵 Display Public Reports */}
+        <div className="mb-10">
+          <h2 className="text-2xl font-semibold text-blue-900 mb-6">Recent Issue Reports</h2>
+          {reports.length === 0 ? (
+            <p className="text-gray-600">No issues reported yet.</p>
+          ) : (
+            <div className="grid gap-6">
+              {reports.map((report) => (
+                <div
+                  key={report._id}
+                  className="bg-white p-5 rounded-xl shadow border-l-4 border-purple-400"
+                >
+                  <h3 className="text-lg font-bold text-purple-700">
+                    📍 {report.location}
+                  </h3>
+                  <p className="mt-2 text-gray-800">{report.description}</p>
 
-        <div className="bg-white p-6 rounded-2xl shadow-lg border border-purple-200 mb-10 transition-transform hover:scale-[1.02]">
-          <h2 className="text-2xl font-semibold text-purple-700 mb-4">Report an Issue</h2>
-          <ReportForm />
-        </div>
+                  {report.image?.data && (
+                    <img
+                      src={`data:${report.image.contentType};base64,${btoa(
+                        new Uint8Array(report.image.data.data)
+                          .reduce((acc, byte) => acc + String.fromCharCode(byte), "")
+                      )}`}
+                      alt="Report"
+                      className="mt-4 max-w-xs rounded-lg border"
+                    />
+                  )}
 
-        <div className="bg-white p-6 rounded-2xl shadow-lg border border-blue-200 transition-transform hover:scale-[1.02]">
-          <h2 className="text-2xl font-semibold text-blue-700 mb-4">Submit a Complaint</h2>
-          <ComplaintForm />
+                  <p className="text-sm text-gray-500 mt-2">
+                    ⏱ {new Date(report.createdAt).toLocaleString()}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
