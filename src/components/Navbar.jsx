@@ -40,7 +40,6 @@ export default function Navbar({ isAdmin = false }) {
       <div className="max-w-6xl mx-auto flex justify-between items-center">
         {/* Left section: Logo + Home Button */}
         <div className="flex items-center gap-4">
-          {/* Logo (also clickable) */}
           <button
             onClick={handleHomeClick}
             className="text-xl font-bold tracking-wide flex items-center gap-2 focus:outline-none hover:scale-105 transition-all"
@@ -52,19 +51,20 @@ export default function Navbar({ isAdmin = false }) {
             />
             Campus Care
           </button>
-
         </div>
 
         {/* Right section: Report + Profile */}
         <div className="flex items-center gap-4">
-          {/* Report Issue Button */}
-          <button
-            onClick={handleReportClick}
-            className="flex items-center gap-2 px-4 py-2 bg-white text-purple-600 rounded-full font-medium shadow hover:scale-105 transition-all duration-300 focus:outline-none active:scale-100"
-          >
-            <span className="text-xl font-bold">+</span>
-            Report Issue
-          </button>
+          {/* Report Issue Button (only if NOT admin) */}
+          {!isAdmin && (
+            <button
+              onClick={handleReportClick}
+              className="flex items-center gap-2 px-4 py-2 bg-white text-purple-600 rounded-full font-medium shadow hover:scale-105 transition-all duration-300 focus:outline-none active:scale-100"
+            >
+              <span className="text-xl font-bold">+</span>
+              Report Issue
+            </button>
+          )}
 
           {/* Profile Menu Button */}
           <div className="relative">
