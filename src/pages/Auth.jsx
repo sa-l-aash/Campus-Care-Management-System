@@ -20,7 +20,7 @@ export default function Auth() {
     e.preventDefault();
 
     if (mode === 'signup' && password !== confirmPassword) {
-      console.warn('❌ Passwords do not match!');
+      alert('❌ Passwords do not match!');
       return;
     }
 
@@ -32,9 +32,10 @@ export default function Auth() {
         await signInWithEmailAndPassword(auth, email, password);
         console.log('✅ Signed in successfully!');
       }
-      navigate('/'); // Redirect after success
+      navigate('/home'); // Redirect after login or signup
     } catch (error) {
-      console.error('❌', error.message);
+      console.error('❌ Auth error:', error.message);
+      alert(error.message); // Show error to user
     }
   };
 
@@ -44,9 +45,10 @@ export default function Auth() {
     try {
       await signInWithPopup(auth, provider);
       console.log('✅ Signed in with Google!');
-      navigate('/'); // Redirect after success
+      navigate('/home'); // Redirect after Google Sign-In
     } catch (error) {
       console.error('❌ Google Sign-In Error:', error.message);
+      alert(error.message);
     }
   };
 
