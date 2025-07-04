@@ -33,10 +33,14 @@ export default function ComplaintForm() {
     }
 
     try {
-      const res = await fetch("/api/report", {
+      const res = await fetch("/api/complaints", {
         method: "POST",
         body: data,
       });
+
+      if (!res.ok) {
+        throw new Error("Failed to submit complaint");
+      }
 
       alert("✅ Complaint submitted successfully!");
       setFormData({ description: "", image: null });

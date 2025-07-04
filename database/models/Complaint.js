@@ -1,15 +1,8 @@
 const mongoose = require("mongoose");
 
-const reportSchema = new mongoose.Schema(
+const complaintSchema = new mongoose.Schema(
   {
-    description: {
-      type: String,
-      required: true,
-    },
-    location: {
-      type: String,
-      required: true,
-    },
+    description: { type: String, required: true },
     image: {
       data: Buffer,
       contentType: String,
@@ -23,4 +16,4 @@ const reportSchema = new mongoose.Schema(
   { timestamps: true } // Adds createdAt and updatedAt
 );
 
-module.exports = mongoose.model("Report", reportSchema);
+module.exports = mongoose.model("Complaint", complaintSchema);
