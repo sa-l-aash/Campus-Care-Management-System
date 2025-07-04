@@ -1,10 +1,16 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Outlet,
+  Navigate
+} from "react-router-dom";
 
 // Components
 import Navbar from "./components/Navbar";
 import ReportForm from "./components/ReportForm";
-import ComplaintForm from "./components/ComplaintForm"; // ✅ Step 1
+import ComplaintForm from "./components/ComplaintForm";
 
 // Pages
 import Auth from "./pages/Auth";
@@ -21,11 +27,10 @@ const Layout = () => (
   </div>
 );
 
-// Home Page Content
+// Home Page Content (now mapped to /home)
 const Home = () => (
   <div>
     <h1 className="text-3xl font-bold text-center mb-8">Campus Care</h1>
-    {/* No forms here */}
   </div>
 );
 
@@ -33,18 +38,21 @@ export default function App() {
   return (
     <Router>
       <Routes>
+        {/* ✅ Redirect "/" to "/auth" initially */}
+        <Route path="/" element={<Navigate to="/auth" replace />} />
+
         {/* Routes with Navbar */}
         <Route element={<Layout />}>
-          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} /> {/* ✅ Home route added */}
           <Route path="/report" element={<ReportForm />} />
-          <Route path="/complaint" element={<ComplaintForm />} /> {/* ✅ Step 2 */}
+          <Route path="/complaint" element={<ComplaintForm />} />
         </Route>
 
         {/* Routes without Navbar */}
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/auth" element={<Auth />} />
       </Routes>
-      <ToastContainer/>
+      <ToastContainer />
     </Router>
   );
 }
