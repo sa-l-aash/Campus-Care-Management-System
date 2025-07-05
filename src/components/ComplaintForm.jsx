@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 
+const API_BASE = "https://campus-care-backend.onrender.com"; // 🌐 Render backend URL
+
 export default function ComplaintForm() {
   const navigate = useNavigate();
 
@@ -33,7 +35,7 @@ export default function ComplaintForm() {
     }
 
     try {
-      const res = await fetch("/api/complaints", {
+      const res = await fetch(`${API_BASE}/api/complaints`, {
         method: "POST",
         body: data,
       });

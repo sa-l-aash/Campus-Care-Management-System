@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 
+const API_BASE = "https://campus-care-backend.onrender.com"; // 🌐 Render backend URL
+
 export default function ReportForm() {
   const navigate = useNavigate();
 
@@ -25,10 +27,12 @@ export default function ReportForm() {
     const data = new FormData();
     data.append("description", formData.description);
     data.append("location", formData.location);
-    data.append("image", formData.image);
+    if (formData.image) {
+      data.append("image", formData.image);
+    }
 
     try {
-      const res = await fetch("/api/reports", {
+      const res = await fetch(`${API_BASE}/api/reports`, {
         method: "POST",
         body: data,
       });

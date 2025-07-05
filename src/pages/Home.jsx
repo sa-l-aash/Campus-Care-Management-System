@@ -3,13 +3,15 @@ import Navbar from "../components/Navbar";
 import ReportForm from "../components/ReportForm";
 import ComplaintForm from "../components/ComplaintForm";
 
+const API_BASE = "https://campus-care-backend.onrender.com"; // 🌐 Render backend URL
+
 export default function Home() {
   const [reports, setReports] = useState([]);
 
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const res = await fetch("/api/reports");
+        const res = await fetch(`${API_BASE}/api/reports`);
         const data = await res.json();
         setReports(data);
       } catch (err) {

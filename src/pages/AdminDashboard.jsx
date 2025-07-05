@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 
+const API_BASE = "https://campus-care-backend.onrender.com"; // 🌐 Render backend URL
+
 export default function AdminDashboard() {
   const [reports, setReports] = useState([]);
   const [complaints, setComplaints] = useState([]);
@@ -12,38 +14,38 @@ export default function AdminDashboard() {
   }, []);
 
   const fetchReports = async () => {
-    const res = await fetch("/api/reports");
+    const res = await fetch(`${API_BASE}/api/reports`);
     const data = await res.json();
     setReports(data);
   };
 
   const fetchComplaints = async () => {
-    const res = await fetch("/api/complaints");
+    const res = await fetch(`${API_BASE}/api/complaints`);
     const data = await res.json();
     setComplaints(data);
   };
 
   const handleDeleteReport = async (id) => {
     if (window.confirm("Are you sure you want to delete this report?")) {
-      await fetch(`/api/reports/${id}`, { method: "DELETE" });
+      await fetch(`${API_BASE}/api/reports/${id}`, { method: "DELETE" });
       fetchReports();
     }
   };
 
   const handleDeleteComplaint = async (id) => {
     if (window.confirm("Are you sure you want to delete this complaint?")) {
-      await fetch(`/api/complaints/${id}`, { method: "DELETE" });
+      await fetch(`${API_BASE}/api/complaints/${id}`, { method: "DELETE" });
       fetchComplaints();
     }
   };
 
   const handleMarkResolvedReport = async (id) => {
-    await fetch(`/api/reports/${id}/status`, { method: "PATCH" });
+    await fetch(`${API_BASE}/api/reports/${id}/status`, { method: "PATCH" });
     fetchReports();
   };
 
   const handleMarkResolvedComplaint = async (id) => {
-    await fetch(`/api/complaints/${id}/status`, { method: "PATCH" });
+    await fetch(`${API_BASE}/api/complaints/${id}/status`, { method: "PATCH" });
     fetchComplaints();
   };
 
