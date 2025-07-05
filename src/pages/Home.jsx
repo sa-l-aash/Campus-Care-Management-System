@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 import ReportForm from "../components/ReportForm";
 import ComplaintForm from "../components/ComplaintForm";
 
-const API_BASE = "https://campus-care-backend.onrender.com"; // 🌐 Render backend URL
+const API_BASE = "https://campus-care-management-system.onrender.com"; // 🌐 Render backend URL
 
 export default function Home() {
   const [reports, setReports] = useState([]);

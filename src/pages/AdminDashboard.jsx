@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 
-const API_BASE = "https://campus-care-backend.onrender.com"; // 🌐 Render backend URL
+const API_BASE = "https://campus-care-management-system.onrender.com"; // 🌐 Render backend URL
 
 export default function AdminDashboard() {
   const [reports, setReports] = useState([]);
