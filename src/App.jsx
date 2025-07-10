@@ -17,6 +17,7 @@ import ResetPassword from "./pages/ResetPassword";
 import Home from "./pages/Home"; // ✅ Use actual Home.jsx
 import Auth from "./pages/Auth";
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminStats from "./pages/AdminStats";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // ✅ Optional: Add if you want default styles
@@ -38,17 +39,19 @@ export default function App() {
         {/* 🔁 Redirect base path to /auth */}
         <Route path="/" element={<Navigate to="/auth" replace />} />
 
-        {/* 🔒 Routes with Navbar */}
+  
         <Route element={<Layout />}>
           <Route path="/home" element={<Home />} />
           <Route path="/report" element={<ReportForm />} />
           <Route path="/complaint" element={<ComplaintForm />} />
         </Route>
 
-        {/* 🔓 Routes without Navbar */}
+    
         <Route path="/auth" element={<Auth />} />
         <Route path="/admin" element={<AdminDashboard />} />
          <Route path="/reset-password" element={<ResetPassword />} />
+         <Route path="/admin/stats" element={<AdminStats />} />
+
       </Routes>
 
       <ToastContainer />
