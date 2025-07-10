@@ -1,9 +1,12 @@
-
 import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { loadTheme } from "./utils/theme"; // 👈 Import the theme loader
+
+// Load saved theme on startup
+loadTheme(); // 👈 Add this before rendering the app
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
