@@ -11,6 +11,7 @@ import {
 import Navbar from "./components/Navbar";
 import ReportForm from "./components/ReportForm";
 import ComplaintForm from "./components/ComplaintForm";
+import ResetPassword from "./pages/ResetPassword";
 
 // Pages
 import Home from "./pages/Home"; // ✅ Use actual Home.jsx
@@ -47,6 +48,7 @@ export default function App() {
         {/* 🔓 Routes without Navbar */}
         <Route path="/auth" element={<Auth />} />
         <Route path="/admin" element={<AdminDashboard />} />
+         <Route path="/reset-password" element={<ResetPassword />} />
       </Routes>
 
       <ToastContainer />
