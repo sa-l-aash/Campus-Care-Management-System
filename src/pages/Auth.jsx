@@ -6,6 +6,7 @@ import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
+  sendPasswordResetEmail,
 } from 'firebase/auth';
 import { Eye, EyeOff } from 'lucide-react';
 
@@ -20,22 +21,46 @@ export default function Auth() {
 
   const handleAuth = async (e) => {
     e.preventDefault();
-    if (mode === 'signup' && password !== confirmPassword) return alert('❌ Passwords do not match!');
+    if (mode === 'signup' && password !== confirmPassword) {
+      alert('❌ Passwords do not match!');
+      return;
+    }
     try {
-      if (mode === 'signup') await createUserWithEmailAndPassword(auth, email, password);
-      else await signInWithEmailAndPassword(auth, email, password);
+      if (mode === 'signup') {
+        await createUserWithEmailAndPassword(auth, email, password);
+        alert('✅ Account created successfully!');
+      } else {
+        await signInWithEmailAndPassword(auth, email, password);
+        alert('✅ Logged in successfully!');
+      }
       navigate('/home');
     } catch (err) {
-      alert(err.message);
+      alert(`❌ ${err.message}`);
     }
   };
 
   const handleGoogleSignIn = async () => {
     try {
       await signInWithPopup(auth, new GoogleAuthProvider());
+      alert('✅ Signed in with Google!');
       navigate('/home');
     } catch (err) {
-      alert(err.message);
+      alert(`❌ ${err.message}`);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    if (!email) {
+      alert("⚠️ Please enter your email to reset your password.");
+      return;
+    }
+    try {
+      await sendPasswordResetEmail(auth, email, {
+        url: `${window.location.origin}/reset-password`, // 👈 Redirect to your custom page
+      });
+      alert("📧 Password reset email sent. Check your inbox!");
+    } catch (err) {
+      alert(`❌ ${err.message}`);
     }
   };
 
@@ -79,7 +104,7 @@ export default function Auth() {
           />
 
           <label className="block text-sm font-medium text-blue-800 mb-1">Password</label>
-          <div className="relative mb-4">
+          <div className="relative mb-2">
             <input
               type={showPassword ? 'text' : 'password'}
               placeholder="Enter your password"
@@ -96,6 +121,19 @@ export default function Auth() {
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
+
+          {/* Forgot password link */}
+          {mode === 'signin' && (
+            <div className="text-right mb-4">
+              <button
+                type="button"
+                onClick={handleForgotPassword}
+                className="text-sm text-purple-600 hover:underline"
+              >
+                Forgot Password?
+              </button>
+            </div>
+          )}
 
           {mode === 'signup' && (
             <>
