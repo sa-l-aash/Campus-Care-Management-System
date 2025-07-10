@@ -1,16 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { User, Menu, X } from "lucide-react";
+import { User, Menu, X, Plus } from "lucide-react";
 
 export default function Navbar({ isAdmin = false }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("darkMode");
+    if (savedTheme === "true") {
+      setDarkMode(true);
+      document.documentElement.classList.add("dark");
+    }
+  }, []);
+
+  const toggleDarkMode = () => {
+    const newTheme = !darkMode;
+    setDarkMode(newTheme);
+    localStorage.setItem("darkMode", newTheme);
+    if (newTheme) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  };
 
   const handleAdminClick = () => {
     const pin = prompt("Enter Admin PIN:");
-    const correctPin = "1234";
+    const correctPin = "1234"; // Replace later with secure validation
     if (pin === correctPin) {
       navigate("/admin");
     } else {
@@ -27,6 +47,8 @@ export default function Navbar({ isAdmin = false }) {
       navigate("/auth");
     } else if (action === "home") {
       navigate("/home");
+    } else if (action === "stats") {
+      navigate("/admin/stats");
     }
   };
 
@@ -42,7 +64,7 @@ export default function Navbar({ isAdmin = false }) {
   const isOnAdminPage = location.pathname === "/admin";
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-md">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-500 to-purple-500 dark:from-gray-900 dark:to-gray-800 text-white shadow-md">
       <div className="max-w-6xl mx-auto flex justify-between items-center p-4">
         {/* Left: Logo */}
         <button
@@ -57,17 +79,29 @@ export default function Navbar({ isAdmin = false }) {
           Campus Care
         </button>
 
-        {/* Right section: Report Button + Profile */}
-        <div className="flex items-center gap-4">
-          {/* Report Button (Always visible on large screens) */}
+        {/* Right section */}
+        <div className="flex items-center gap-3">
+          {/* Report Button */}
           {!isAdmin && (
-            <button
-              onClick={handleReportClick}
-              className="hidden sm:flex items-center gap-2 px-4 py-2 bg-white text-purple-600 rounded-full font-medium shadow hover:scale-105 transition duration-300 focus:outline-none active:scale-100"
-            >
-              <span className="text-xl font-bold">+</span>
-              Report Issue
-            </button>
+            <>
+              {/* For small screens: Plus icon */}
+              <button
+                onClick={handleReportClick}
+                className="sm:hidden w-9 h-9 rounded-full bg-white text-purple-600 flex items-center justify-center shadow-md hover:scale-110 transition focus:outline-none"
+                aria-label="Add Report"
+              >
+                <Plus size={18} /> {/* 🔥 smaller icon */}
+              </button>
+
+              {/* For larger screens: Full button */}
+              <button
+                onClick={handleReportClick}
+                className="hidden sm:flex items-center gap-2 px-4 py-2 bg-white text-purple-600 rounded-full font-medium shadow hover:scale-105 transition duration-300 focus:outline-none active:scale-100"
+              >
+                <span className="text-xl font-bold">+</span>
+                Report Issue
+              </button>
+            </>
           )}
 
           {/* Profile Menu */}
@@ -80,6 +114,47 @@ export default function Navbar({ isAdmin = false }) {
               >
                 {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
+              {mobileMenuOpen && (
+                <div className="absolute right-0 mt-2 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-xl shadow-xl w-40 z-20 overflow-hidden animate-fade-in">
+                  {!isOnHomePage && (
+                    <button
+                      onClick={() => handleMenuSelect("home")}
+                      className="w-full text-left px-4 py-2 hover:bg-purple-100 dark:hover:bg-gray-700"
+                    >
+                      Home
+                    </button>
+                  )}
+                  {!isOnAdminPage && !isAdmin && (
+                    <button
+                      onClick={() => handleMenuSelect("admin")}
+                      className="w-full text-left px-4 py-2 hover:bg-purple-100 dark:hover:bg-gray-700"
+                    >
+                      Admin
+                    </button>
+                  )}
+                  {isAdmin && (
+                    <button
+                      onClick={() => handleMenuSelect("stats")}
+                      className="w-full text-left px-4 py-2 hover:bg-purple-100 dark:hover:bg-gray-700"
+                    >
+                      Stats
+                    </button>
+                  )}
+                  {/* 🌙 Dark Mode Toggle */}
+                  <button
+                    onClick={toggleDarkMode}
+                    className="w-full text-left px-4 py-2 hover:bg-purple-100 dark:hover:bg-gray-700"
+                  >
+                    {darkMode ? "Light Mode" : "Dark Mode"}
+                  </button>
+                  <button
+                    onClick={() => handleMenuSelect("logout")}
+                    className="w-full text-left px-4 py-2 hover:bg-purple-100 dark:hover:bg-gray-700"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Desktop Profile Button */}
@@ -95,11 +170,11 @@ export default function Navbar({ isAdmin = false }) {
               </button>
 
               {menuOpen && (
-                <div className="absolute right-0 mt-2 bg-white text-gray-800 rounded-xl shadow-xl w-40 z-20 overflow-hidden animate-fade-in">
+                <div className="absolute right-0 mt-2 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-xl shadow-xl w-48 z-20 overflow-hidden animate-fade-in">
                   {!isOnHomePage && (
                     <button
                       onClick={() => handleMenuSelect("home")}
-                      className="w-full text-left px-4 py-2 hover:bg-purple-100"
+                      className="w-full text-left px-4 py-2 hover:bg-purple-100 dark:hover:bg-gray-700"
                     >
                       Home
                     </button>
@@ -107,14 +182,29 @@ export default function Navbar({ isAdmin = false }) {
                   {!isOnAdminPage && !isAdmin && (
                     <button
                       onClick={() => handleMenuSelect("admin")}
-                      className="w-full text-left px-4 py-2 hover:bg-purple-100"
+                      className="w-full text-left px-4 py-2 hover:bg-purple-100 dark:hover:bg-gray-700"
                     >
                       Admin
                     </button>
                   )}
+                  {isAdmin && (
+                    <button
+                      onClick={() => handleMenuSelect("stats")}
+                      className="w-full text-left px-4 py-2 hover:bg-purple-100 dark:hover:bg-gray-700"
+                    >
+                      Stats
+                    </button>
+                  )}
+                  {/* 🌙 Dark Mode Toggle */}
+                  <button
+                    onClick={toggleDarkMode}
+                    className="w-full text-left px-4 py-2 hover:bg-purple-100 dark:hover:bg-gray-700"
+                  >
+                    {darkMode ? "Light Mode" : "Dark Mode"}
+                  </button>
                   <button
                     onClick={() => handleMenuSelect("logout")}
-                    className="w-full text-left px-4 py-2 hover:bg-purple-100"
+                    className="w-full text-left px-4 py-2 hover:bg-purple-100 dark:hover:bg-gray-700"
                   >
                     Logout
                   </button>
@@ -124,43 +214,6 @@ export default function Navbar({ isAdmin = false }) {
           </div>
         </div>
       </div>
-
-      {/* Mobile Dropdown (Report Button + Profile Options) */}
-      {mobileMenuOpen && (
-        <div className="sm:hidden bg-white text-gray-800 rounded-b-xl shadow-md px-4 py-3 space-y-2">
-          {/* Report Button visible in mobile dropdown */}
-          {!isAdmin && (
-            <button
-              onClick={handleReportClick}
-              className="block w-full text-left px-4 py-2 rounded-lg bg-purple-50 text-purple-600 font-medium hover:bg-purple-100"
-            >
-              ➕ Report Issue
-            </button>
-          )}
-          {!isOnHomePage && (
-            <button
-              onClick={() => handleMenuSelect("home")}
-              className="block w-full text-left px-4 py-2 rounded-lg hover:bg-purple-100"
-            >
-              Home
-            </button>
-          )}
-          {!isOnAdminPage && !isAdmin && (
-            <button
-              onClick={() => handleMenuSelect("admin")}
-              className="block w-full text-left px-4 py-2 rounded-lg hover:bg-purple-100"
-            >
-              Admin
-            </button>
-          )}
-          <button
-            onClick={() => handleMenuSelect("logout")}
-            className="block w-full text-left px-4 py-2 rounded-lg hover:bg-purple-100"
-          >
-            Logout
-          </button>
-        </div>
-      )}
     </nav>
   );
 }

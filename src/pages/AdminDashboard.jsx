@@ -6,9 +6,13 @@ const API_BASE = "http://localhost:5000";
 export default function AdminDashboard() {
   const [reports, setReports] = useState([]);
   const [complaints, setComplaints] = useState([]);
-  const [activeTab, setActiveTab] = useState("reports"); // tabs: 'reports' or 'complaints'
+  const [activeTab, setActiveTab] = useState("reports");
   const [loadingReports, setLoadingReports] = useState(true);
   const [loadingComplaints, setLoadingComplaints] = useState(true);
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterStatus, setFilterStatus] = useState("all");
+  const [sortOrder, setSortOrder] = useState("desc");
 
   useEffect(() => {
     fetchReports();
@@ -63,23 +67,53 @@ export default function AdminDashboard() {
     fetchComplaints();
   };
 
+  const filteredReports = reports
+    .filter((report) => {
+      const matchesSearch =
+        report.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        report.location?.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesStatus =
+        filterStatus === "all" ? true : report.status === filterStatus;
+      return matchesSearch && matchesStatus;
+    })
+    .sort((a, b) => {
+      const dateA = new Date(a.createdAt);
+      const dateB = new Date(b.createdAt);
+      return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
+    });
+
+  const filteredComplaints = complaints
+    .filter((complaint) => {
+      const matchesSearch = complaint.description
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
+      const matchesStatus =
+        filterStatus === "all" ? true : complaint.status === filterStatus;
+      return matchesSearch && matchesStatus;
+    })
+    .sort((a, b) => {
+      const dateA = new Date(a.createdAt);
+      const dateB = new Date(b.createdAt);
+      return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
+    });
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-100">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-100 dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-gray-100">
       <Navbar isAdmin />
 
       <div className="pt-24 px-4 sm:px-6 max-w-6xl mx-auto">
-        <h2 className="text-3xl sm:text-4xl font-bold text-blue-800 mb-8 text-center">
+        <h2 className="text-3xl sm:text-4xl font-bold text-blue-800 dark:text-blue-300 mb-8 text-center">
           Admin Dashboard
         </h2>
 
         {/* Tabs */}
-        <div className="flex justify-center flex-wrap gap-3 mb-8">
+        <div className="flex justify-center flex-wrap gap-3 mb-6">
           <button
             onClick={() => setActiveTab("reports")}
             className={`px-4 sm:px-6 py-2 rounded-full font-semibold transition ${
               activeTab === "reports"
                 ? "bg-blue-500 text-white"
-                : "bg-gray-200 text-gray-700"
+                : "bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-200"
             }`}
           >
             📋 Reports
@@ -89,49 +123,67 @@ export default function AdminDashboard() {
             className={`px-4 sm:px-6 py-2 rounded-full font-semibold transition ${
               activeTab === "complaints"
                 ? "bg-red-500 text-white"
-                : "bg-gray-200 text-gray-700"
+                : "bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-200"
             }`}
           >
             🗣 Complaints
           </button>
         </div>
 
-        {/* Tab Content */}
-        {activeTab === "reports" && (
-          <section>
-            <h3 className="text-xl sm:text-2xl font-semibold text-purple-700 mb-4 sm:mb-6">
-              📋 Damage Reports
-            </h3>
+        {/* Search, Filter & Sort */}
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-3 mb-6">
+          {/* Search */}
+          <input
+            type="text"
+            placeholder="🔍 Search by description or location"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full sm:w-1/2 px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-800 dark:text-gray-100"
+          />
 
+          <div className="flex gap-3">
+            {/* Filter */}
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              className="px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-800 dark:text-gray-100"
+            >
+              <option value="all">🔄 All Statuses</option>
+              <option value="pending">🟡 Pending</option>
+              <option value="resolved">✅ Resolved</option>
+            </select>
+
+            {/* Sort */}
+            <button
+              onClick={() =>
+                setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"))
+              }
+              className="px-4 py-2 rounded-full bg-gray-800 text-white font-medium hover:bg-gray-700 transition"
+            >
+              {sortOrder === "asc" ? "⬆️ Oldest First" : "⬇️ Newest First"}
+            </button>
+          </div>
+        </div>
+
+        {/* Tab Content */}
+        {activeTab === "reports" ? (
+          <section>
             {loadingReports ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 animate-pulse">
-                {[1, 2, 3, 4].map((n) => (
-                  <div
-                    key={n}
-                    className="border border-purple-100 p-4 sm:p-5 rounded-xl bg-white shadow-md"
-                  >
-                    <div className="h-4 bg-purple-200 rounded w-2/3 mb-2"></div>
-                    <div className="h-3 bg-purple-100 rounded w-full mb-2"></div>
-                    <div className="h-3 bg-purple-100 rounded w-5/6 mb-4"></div>
-                    <div className="h-32 bg-purple-100 rounded-xl mb-2"></div>
-                    <div className="h-3 bg-purple-100 rounded w-1/2"></div>
-                  </div>
-                ))}
-              </div>
-            ) : reports.length > 0 ? (
+              <p className="text-center text-gray-500 dark:text-gray-400">Loading reports...</p>
+            ) : filteredReports.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                {reports.map((report) => (
+                {filteredReports.map((report) => (
                   <div
                     key={report._id}
-                    className="border border-purple-200 p-4 sm:p-5 rounded-xl bg-white shadow-md"
+                    className="border border-purple-200 dark:border-purple-700 p-4 sm:p-5 rounded-xl bg-white dark:bg-gray-800 shadow-md"
                   >
-                    <p className="text-gray-800">
+                    <p>
                       <strong>Description:</strong> {report.description}
                     </p>
-                    <p className="text-gray-800">
+                    <p>
                       <strong>Location:</strong> {report.location}
                     </p>
-                    <p className="text-gray-500 text-sm mt-1">
+                    <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
                       ⏱ {new Date(report.createdAt).toLocaleString()}
                     </p>
 
@@ -139,7 +191,7 @@ export default function AdminDashboard() {
                       className={`text-sm font-medium mt-2 ${
                         report.status === "resolved"
                           ? "text-green-600"
-                          : "text-yellow-600"
+                          : "text-yellow-500"
                       }`}
                     >
                       {report.status === "resolved"
@@ -167,43 +219,26 @@ export default function AdminDashboard() {
                 ))}
               </div>
             ) : (
-              <p className="text-gray-500">No reports available.</p>
+              <p className="text-gray-500 dark:text-gray-400 text-center">
+                No matching reports found.
+              </p>
             )}
           </section>
-        )}
-
-        {activeTab === "complaints" && (
+        ) : (
           <section>
-            <h3 className="text-xl sm:text-2xl font-semibold text-red-700 mb-4 sm:mb-6">
-              🗣️ Complaints
-            </h3>
-
             {loadingComplaints ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 animate-pulse">
-                {[1, 2, 3, 4].map((n) => (
-                  <div
-                    key={n}
-                    className="border border-red-100 p-4 sm:p-5 rounded-xl bg-white shadow-md"
-                  >
-                    <div className="h-4 bg-red-200 rounded w-2/3 mb-2"></div>
-                    <div className="h-3 bg-red-100 rounded w-full mb-2"></div>
-                    <div className="h-3 bg-red-100 rounded w-5/6 mb-4"></div>
-                    <div className="h-32 bg-red-100 rounded-xl mb-2"></div>
-                    <div className="h-3 bg-red-100 rounded w-1/2"></div>
-                  </div>
-                ))}
-              </div>
-            ) : complaints.length > 0 ? (
+              <p className="text-center text-gray-500 dark:text-gray-400">Loading complaints...</p>
+            ) : filteredComplaints.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                {complaints.map((complaint) => (
+                {filteredComplaints.map((complaint) => (
                   <div
                     key={complaint._id}
-                    className="border border-red-200 p-4 sm:p-5 rounded-xl bg-white shadow-md"
+                    className="border border-red-200 dark:border-red-700 p-4 sm:p-5 rounded-xl bg-white dark:bg-gray-800 shadow-md"
                   >
-                    <p className="text-gray-800">
+                    <p>
                       <strong>Description:</strong> {complaint.description}
                     </p>
-                    <p className="text-gray-500 text-sm mt-1">
+                    <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
                       ⏱ {new Date(complaint.createdAt).toLocaleString()}
                     </p>
 
@@ -211,7 +246,7 @@ export default function AdminDashboard() {
                       className={`text-sm font-medium mt-2 ${
                         complaint.status === "resolved"
                           ? "text-green-600"
-                          : "text-yellow-600"
+                          : "text-yellow-500"
                       }`}
                     >
                       {complaint.status === "resolved"
@@ -241,7 +276,9 @@ export default function AdminDashboard() {
                 ))}
               </div>
             ) : (
-              <p className="text-gray-500">No complaints available.</p>
+              <p className="text-gray-500 dark:text-gray-400 text-center">
+                No matching complaints found.
+              </p>
             )}
           </section>
         )}
