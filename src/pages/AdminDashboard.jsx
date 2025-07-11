@@ -97,6 +97,22 @@ export default function AdminDashboard() {
       return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
     });
 
+  // 🔥 FIXED: Proper base64 image rendering
+  const renderImage = (image) => {
+    if (!image?.data) return null;
+
+    try {
+      const base64String = btoa(
+        new Uint8Array(image.data.data)
+          .reduce((data, byte) => data + String.fromCharCode(byte), "")
+      );
+      return `data:${image.contentType};base64,${base64String}`;
+    } catch (err) {
+      console.error("⚠️ Error rendering image:", err);
+      return null;
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-100 dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-gray-100">
       <Navbar isAdmin />
@@ -141,24 +157,24 @@ export default function AdminDashboard() {
             className="w-full sm:w-1/2 px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-800 dark:text-gray-100"
           />
 
-          <div className="flex gap-3">
-            {/* Filter */}
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+            {/* Filter Dropdown */}
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-800 dark:text-gray-100"
+              className="w-full sm:w-auto px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-400 dark:bg-gray-800 dark:text-gray-100"
             >
-              <option value="all">🔄 All Statuses</option>
+              <option value="all">🌐 All Statuses</option>
               <option value="pending">🟡 Pending</option>
               <option value="resolved">✅ Resolved</option>
             </select>
 
-            {/* Sort */}
+            {/* Sort Button */}
             <button
               onClick={() =>
                 setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"))
               }
-              className="px-4 py-2 rounded-full bg-gray-800 text-white font-medium hover:bg-gray-700 transition"
+              className="w-full sm:w-auto px-4 py-2 rounded-full bg-gray-800 text-white font-medium hover:bg-gray-700 transition"
             >
               {sortOrder === "asc" ? "⬆️ Oldest First" : "⬇️ Newest First"}
             </button>
@@ -186,6 +202,15 @@ export default function AdminDashboard() {
                     <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
                       ⏱ {new Date(report.createdAt).toLocaleString()}
                     </p>
+
+                    {/* Report Image */}
+                    {report.image?.data && (
+                      <img
+                        src={renderImage(report.image)}
+                        alt="Report"
+                        className="mt-3 w-full rounded-lg border object-cover max-h-52 sm:max-h-60"
+                      />
+                    )}
 
                     <p
                       className={`text-sm font-medium mt-2 ${

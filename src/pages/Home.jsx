@@ -47,12 +47,13 @@ export default function Home() {
 
         {/* 🔍 Search and Filters */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+          {/* Search Field */}
           <input
             type="text"
             placeholder="Search by description or location..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full sm:w-1/2 px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring focus:border-blue-300 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200 dark:placeholder-gray-400 dark:focus:border-purple-400"
+            className="w-full sm:w-1/2 px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200 dark:placeholder-gray-400 dark:focus:ring-purple-400"
           />
 
           {/* Responsive Status Dropdown */}
@@ -60,9 +61,9 @@ export default function Home() {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full sm:w-auto px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring focus:border-purple-300 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200 dark:focus:border-purple-400"
+              className="w-full sm:w-auto px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400 transition bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200 dark:focus:ring-purple-400"
             >
-              <option value="all">All Statuses</option>
+              <option value="all">🌐 All Statuses</option>
               <option value="pending">🟡 Pending</option>
               <option value="resolved">✅ Resolved</option>
             </select>
@@ -71,7 +72,9 @@ export default function Home() {
 
         {/* Reports */}
         {loading ? (
-          <p className="text-center text-gray-600 dark:text-gray-400">Loading reports...</p>
+          <p className="text-center text-gray-600 dark:text-gray-400">
+            Loading reports...
+          </p>
         ) : filteredReports.length === 0 ? (
           <p className="text-center text-gray-500 dark:text-gray-400">
             No reports match your search.
@@ -86,7 +89,9 @@ export default function Home() {
                 <h3 className="text-lg font-bold text-purple-700 dark:text-purple-400">
                   📍 {report.location}
                 </h3>
-                <p className="mt-2 text-gray-800 dark:text-gray-300">{report.description}</p>
+                <p className="mt-2 text-gray-800 dark:text-gray-300">
+                  {report.description}
+                </p>
 
                 <p
                   className={`text-sm font-medium mt-2 ${
