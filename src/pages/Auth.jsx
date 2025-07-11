@@ -31,7 +31,6 @@ export default function Auth() {
         alert('✅ Account created successfully!');
       } else {
         await signInWithEmailAndPassword(auth, email, password);
-        alert('✅ Logged in successfully!');
       }
       navigate('/home');
     } catch (err) {
