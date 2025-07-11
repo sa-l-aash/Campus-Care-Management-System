@@ -164,7 +164,7 @@ export default function AdminDashboard() {
               onChange={(e) => setFilterStatus(e.target.value)}
               className="w-full sm:w-auto px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-400 dark:bg-gray-800 dark:text-gray-100"
             >
-              <option value="all">🌐 All Statuses</option>
+              <option value="all">All Statuses</option>
               <option value="pending">🟡 Pending</option>
               <option value="resolved">✅ Resolved</option>
             </select>
@@ -174,7 +174,7 @@ export default function AdminDashboard() {
               onClick={() =>
                 setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"))
               }
-              className="w-full sm:w-auto px-4 py-2 rounded-full bg-gray-800 text-white font-medium hover:bg-gray-700 transition"
+className="w-full sm:w-auto px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 font-medium shadow-sm hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
             >
               {sortOrder === "asc" ? "⬆️ Oldest First" : "⬇️ Newest First"}
             </button>
