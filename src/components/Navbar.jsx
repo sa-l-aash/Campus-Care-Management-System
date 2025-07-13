@@ -21,16 +21,12 @@ export default function Navbar({ isAdmin = false }) {
     const newTheme = !darkMode;
     setDarkMode(newTheme);
     localStorage.setItem("darkMode", newTheme);
-    if (newTheme) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
+    document.documentElement.classList.toggle("dark", newTheme);
   };
 
   const handleAdminClick = () => {
     const pin = prompt("Enter Admin PIN:");
-    const correctPin = "1234"; // Replace later with secure validation
+    const correctPin = "1234"; // Change this to real validation later
     if (pin === correctPin) {
       navigate("/admin");
     } else {
@@ -65,8 +61,8 @@ export default function Navbar({ isAdmin = false }) {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-500 to-purple-500 dark:from-gray-900 dark:to-gray-800 text-white shadow-md">
-      <div className="max-w-6xl mx-auto flex justify-between items-center p-4">
-        {/* Left: Logo */}
+      <div className="w-[96%] max-w-7xl mx-auto flex justify-between items-center px-4 py-3">
+        {/* Logo */}
         <button
           onClick={handleHomeClick}
           className="text-lg sm:text-xl font-bold tracking-wide flex items-center gap-2 focus:outline-none hover:scale-105 transition-all"
@@ -84,19 +80,19 @@ export default function Navbar({ isAdmin = false }) {
           {/* Report Button */}
           {!isAdmin && (
             <>
-              {/* For small screens: Plus icon */}
+              {/* Mobile icon */}
               <button
                 onClick={handleReportClick}
                 className="sm:hidden w-9 h-9 rounded-full bg-white text-purple-600 flex items-center justify-center shadow-md hover:scale-110 transition focus:outline-none"
                 aria-label="Add Report"
               >
-                <Plus size={18} /> {/* 🔥 smaller icon */}
+                <Plus size={18} />
               </button>
 
-              {/* For larger screens: Full button */}
+              {/* Desktop button */}
               <button
                 onClick={handleReportClick}
-                className="hidden sm:flex items-center gap-2 px-4 py-2 bg-white text-purple-600 rounded-full font-medium shadow hover:scale-105 transition duration-300 focus:outline-none active:scale-100"
+                className="hidden sm:flex items-center gap-2 px-4 py-2 bg-white text-purple-600 rounded-full font-medium shadow hover:scale-105 transition duration-300"
               >
                 <span className="text-xl font-bold">+</span>
                 Report Issue
@@ -104,9 +100,9 @@ export default function Navbar({ isAdmin = false }) {
             </>
           )}
 
-          {/* Profile Menu */}
+          {/* Menu */}
           <div className="relative">
-            {/* Mobile Hamburger Icon */}
+            {/* Mobile Menu */}
             <div className="sm:hidden">
               <button
                 onClick={() => setMobileMenuOpen((prev) => !prev)}
@@ -115,7 +111,7 @@ export default function Navbar({ isAdmin = false }) {
                 {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
               {mobileMenuOpen && (
-                <div className="absolute right-0 mt-2 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-xl shadow-xl w-40 z-20 overflow-hidden animate-fade-in">
+                <div className="absolute right-0 mt-2 bg-white/90 backdrop-blur-md dark:bg-gray-800/90 text-gray-800 dark:text-gray-200 rounded-xl shadow-xl w-44 z-30 animate-fade-in overflow-hidden">
                   {!isOnHomePage && (
                     <button
                       onClick={() => handleMenuSelect("home")}
@@ -140,7 +136,6 @@ export default function Navbar({ isAdmin = false }) {
                       Stats
                     </button>
                   )}
-                  {/* 🌙 Dark Mode Toggle */}
                   <button
                     onClick={toggleDarkMode}
                     className="w-full text-left px-4 py-2 hover:bg-purple-100 dark:hover:bg-gray-700"
@@ -157,11 +152,11 @@ export default function Navbar({ isAdmin = false }) {
               )}
             </div>
 
-            {/* Desktop Profile Button */}
+            {/* Desktop Profile */}
             <div className="hidden sm:block">
               <button
                 onClick={() => setMenuOpen((prev) => !prev)}
-                className="w-10 h-10 rounded-full bg-white text-purple-600 flex items-center justify-center shadow-md hover:scale-105 transition-all focus:outline-none active:scale-100"
+                className="w-10 h-10 rounded-full bg-white text-purple-600 flex items-center justify-center shadow-md hover:scale-105 transition focus:outline-none"
                 aria-label="Profile menu"
               >
                 <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
@@ -170,7 +165,7 @@ export default function Navbar({ isAdmin = false }) {
               </button>
 
               {menuOpen && (
-                <div className="absolute right-0 mt-2 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-xl shadow-xl w-48 z-20 overflow-hidden animate-fade-in">
+                <div className="absolute right-0 mt-2 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-xl shadow-xl w-48 z-30 animate-fade-in overflow-hidden">
                   {!isOnHomePage && (
                     <button
                       onClick={() => handleMenuSelect("home")}
@@ -195,7 +190,6 @@ export default function Navbar({ isAdmin = false }) {
                       Stats
                     </button>
                   )}
-                  {/* 🌙 Dark Mode Toggle */}
                   <button
                     onClick={toggleDarkMode}
                     className="w-full text-left px-4 py-2 hover:bg-purple-100 dark:hover:bg-gray-700"
