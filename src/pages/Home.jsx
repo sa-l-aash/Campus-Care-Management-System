@@ -7,8 +7,8 @@ export default function Home() {
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const [searchTerm, setSearchTerm] = useState(""); // 🔍 For search
-  const [statusFilter, setStatusFilter] = useState("all"); // ✅ Filter
+  const [searchTerm, setSearchTerm] = useState(""); // For search
+  const [statusFilter, setStatusFilter] = useState("all"); //  Filter
 
   useEffect(() => {
     fetchReports();
