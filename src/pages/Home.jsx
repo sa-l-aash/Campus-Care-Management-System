@@ -11,11 +11,7 @@ export default function Home() {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-
-
-  const [searchTerm, setSearchTerm] = useState(""); // For search
-  const [statusFilter, setStatusFilter] = useState("all"); //  Filter
-
+  
   useEffect(() => {
     fetchReports();
 

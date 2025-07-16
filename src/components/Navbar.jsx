@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { User, Menu, X, Plus } from "lucide-react";
 
-export default function Navbar({ isAdmin = false }) {
+export default function Navbar({ isAdmin = false, isStats = false }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -26,25 +26,26 @@ export default function Navbar({ isAdmin = false }) {
 
   const handleAdminClick = () => {
     const pin = prompt("Enter Admin PIN:");
-    const correctPin = "1234"; // Change this to real validation later
+    const correctPin = "1234"; // Replace with real validation
     if (pin === correctPin) {
       navigate("/admin");
     } else {
-      alert("Incorrect PIN. Access denied.");
+      alert("❌ Incorrect PIN. Access denied.");
     }
   };
 
   const handleMenuSelect = (action) => {
     setMenuOpen(false);
     setMobileMenuOpen(false);
+
     if (action === "admin") {
       handleAdminClick();
-    } else if (action === "logout") {
-      navigate("/auth");
-    } else if (action === "home") {
-      navigate("/home");
     } else if (action === "stats") {
       navigate("/admin/stats");
+    } else if (action === "home") {
+      navigate("/home");
+    } else if (action === "logout") {
+      navigate("/auth");
     }
   };
 
@@ -58,6 +59,7 @@ export default function Navbar({ isAdmin = false }) {
 
   const isOnHomePage = location.pathname === "/home";
   const isOnAdminPage = location.pathname === "/admin";
+  const isOnStatsPage = location.pathname === "/admin/stats";
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-500 to-purple-500 dark:from-gray-900 dark:to-gray-800 text-white shadow-md">
@@ -75,7 +77,7 @@ export default function Navbar({ isAdmin = false }) {
           Campus Care
         </button>
 
-        {/* Right section */}
+        {/* Right Section */}
         <div className="flex items-center gap-3">
           {/* Report Button */}
           {!isAdmin && (
@@ -120,7 +122,9 @@ export default function Navbar({ isAdmin = false }) {
                       Home
                     </button>
                   )}
-                  {!isOnAdminPage && !isAdmin && (
+
+                  {/* 🔁 Switch between Admin and Stats */}
+                  {!isAdmin && !isOnAdminPage && !isOnStatsPage && (
                     <button
                       onClick={() => handleMenuSelect("admin")}
                       className="w-full text-left px-4 py-2 hover:bg-purple-100 dark:hover:bg-gray-700"
@@ -128,7 +132,7 @@ export default function Navbar({ isAdmin = false }) {
                       Admin
                     </button>
                   )}
-                  {isAdmin && (
+                  {isAdmin && !isStats && (
                     <button
                       onClick={() => handleMenuSelect("stats")}
                       className="w-full text-left px-4 py-2 hover:bg-purple-100 dark:hover:bg-gray-700"
@@ -136,6 +140,15 @@ export default function Navbar({ isAdmin = false }) {
                       Stats
                     </button>
                   )}
+                  {isStats && (
+                    <button
+                      onClick={() => handleMenuSelect("admin")}
+                      className="w-full text-left px-4 py-2 hover:bg-purple-100 dark:hover:bg-gray-700"
+                    >
+                      Admin
+                    </button>
+                  )}
+
                   <button
                     onClick={toggleDarkMode}
                     className="w-full text-left px-4 py-2 hover:bg-purple-100 dark:hover:bg-gray-700"
@@ -174,7 +187,9 @@ export default function Navbar({ isAdmin = false }) {
                       Home
                     </button>
                   )}
-                  {!isOnAdminPage && !isAdmin && (
+
+                  {/* 🔁 Switch between Admin and Stats */}
+                  {!isAdmin && !isOnAdminPage && !isOnStatsPage && (
                     <button
                       onClick={() => handleMenuSelect("admin")}
                       className="w-full text-left px-4 py-2 hover:bg-purple-100 dark:hover:bg-gray-700"
@@ -182,7 +197,7 @@ export default function Navbar({ isAdmin = false }) {
                       Admin
                     </button>
                   )}
-                  {isAdmin && (
+                  {isAdmin && !isStats && (
                     <button
                       onClick={() => handleMenuSelect("stats")}
                       className="w-full text-left px-4 py-2 hover:bg-purple-100 dark:hover:bg-gray-700"
@@ -190,6 +205,15 @@ export default function Navbar({ isAdmin = false }) {
                       Stats
                     </button>
                   )}
+                  {isStats && (
+                    <button
+                      onClick={() => handleMenuSelect("admin")}
+                      className="w-full text-left px-4 py-2 hover:bg-purple-100 dark:hover:bg-gray-700"
+                    >
+                      Admin
+                    </button>
+                  )}
+
                   <button
                     onClick={toggleDarkMode}
                     className="w-full text-left px-4 py-2 hover:bg-purple-100 dark:hover:bg-gray-700"

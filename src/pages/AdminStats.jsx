@@ -45,7 +45,9 @@ export default function AdminStats() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-100 dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-gray-100">
-      <Navbar isAdmin />
+      {/* ✅ Pass isStats prop to Navbar */}
+      <Navbar isStats />
+
       <div className="pt-24 px-4 sm:px-6 max-w-4xl mx-auto">
         <h2 className="text-2xl sm:text-3xl font-bold text-blue-800 dark:text-blue-300 mb-6 text-center">
           📊 Admin Statistics
