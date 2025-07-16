@@ -11,7 +11,7 @@ export default function Home() {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-  
+
   useEffect(() => {
     fetchReports();
 
@@ -93,7 +93,7 @@ export default function Home() {
                 className="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-md border-l-4 border-purple-400 dark:border-purple-600 hover:shadow-lg transition"
               >
                 <h3 className="text-lg font-bold text-purple-700 dark:text-purple-400">
-                  📍 {report.location}
+                  📌 {report.location}
                 </h3>
                 <p className="mt-2 text-gray-800 dark:text-gray-300">
                   {report.description}
