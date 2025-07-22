@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+// Firebase authentication imports
 import { auth } from '../firebase';
 import {
   createUserWithEmailAndPassword,
@@ -22,44 +23,44 @@ export default function Auth() {
   const handleAuth = async (e) => {
     e.preventDefault();
     if (mode === 'signup' && password !== confirmPassword) {
-      alert('❌ Passwords do not match!');
+      alert('Passwords do not match!');
       return;
     }
     try {
       if (mode === 'signup') {
         await createUserWithEmailAndPassword(auth, email, password);
-        alert('✅ Account created successfully!');
+        alert('Account created successfully!');
       } else {
         await signInWithEmailAndPassword(auth, email, password);
       }
       navigate('/home');
     } catch (err) {
-      alert(`❌ ${err.message}`);
+      alert(`${err.message}`);
     }
   };
 
   const handleGoogleSignIn = async () => {
     try {
       await signInWithPopup(auth, new GoogleAuthProvider());
-      alert('✅ Signed in with Google!');
+      alert('Signed in with Google!');
       navigate('/home');
     } catch (err) {
-      alert(`❌ ${err.message}`);
+      alert(`${err.message}`);
     }
   };
-
+// Handle password reset
   const handleForgotPassword = async () => {
     if (!email) {
-      alert("⚠️ Please enter your email to reset your password.");
+      alert("Please enter your email to reset your password.");
       return;
     }
     try {
       await sendPasswordResetEmail(auth, email, {
-        url: `${window.location.origin}/reset-password`, // 👈 Redirect to your custom page
+        url: `${window.location.origin}/reset-password`, 
       });
-      alert("📧 Password reset email sent. Check your inbox!");
+      alert("Password reset email sent. Check your inbox/spam!");
     } catch (err) {
-      alert(`❌ ${err.message}`);
+      alert(`${err.message}`);
     }
   };
 
@@ -90,7 +91,7 @@ export default function Auth() {
             </button>
           ))}
         </div>
-
+        {/* Form for Sign In or Sign Up */}
         <form onSubmit={handleAuth} className="text-left">
           <label className="block text-sm font-medium text-blue-800 mb-1">Email</label>
           <input

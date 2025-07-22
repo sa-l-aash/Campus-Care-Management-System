@@ -1,3 +1,4 @@
+//complaint model
 const mongoose = require("mongoose");
 
 const complaintSchema = new mongoose.Schema(
@@ -13,7 +14,7 @@ const complaintSchema = new mongoose.Schema(
       default: "pending",
     },
   },
-  { timestamps: true } // Adds createdAt and updatedAt
+  { timestamps: true } // Adds createdAt and updatedAt timestamps
 );
 
 module.exports = mongoose.model("Complaint", complaintSchema);

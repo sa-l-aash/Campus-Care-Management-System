@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-
+// Our API base URL
 const API_BASE = "http://localhost:5000";
 
+// ReportForm component for submitting damage reports
 export default function ReportForm() {
   const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
     description: "",
     location: "",
@@ -38,15 +38,15 @@ export default function ReportForm() {
       });
 
       if (res.ok) {
-        alert("✅ Report submitted successfully!");
+        alert("Report submitted successfully!");
         setFormData({ description: "", location: "", image: null });
         navigate("/home");
       } else {
-        alert("❌ Failed to submit the report. Please try again.");
+        alert("Failed to submit the report. Please try again.");
       }
     } catch (err) {
       console.error("Upload error", err);
-      alert("❌ Server error while submitting the report.");
+      alert("Server error while submitting the report.");
     }
   };
 

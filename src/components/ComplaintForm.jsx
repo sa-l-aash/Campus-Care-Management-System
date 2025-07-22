@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-
+// Our API base URL
 const API_BASE = "http://localhost:5000";
 
 export default function ComplaintForm() {
@@ -24,7 +24,7 @@ export default function ComplaintForm() {
     e.preventDefault();
 
     const confirmed = window.confirm(
-      "⚠️ This is a private message and will only be visible to the administration.\n\nDo you want to confirm and send?"
+      "This is a private message and will only be visible to the administration.\n\nDo you want to confirm and send?"
     );
     if (!confirmed) return;
 
@@ -35,6 +35,7 @@ export default function ComplaintForm() {
     }
 
     try {
+      // Send POST request to submit complaint
       const res = await fetch(`${API_BASE}/api/complaints`, {
         method: "POST",
         body: data,
@@ -63,7 +64,6 @@ export default function ComplaintForm() {
                  text-gray-900 dark:text-gray-100 
                  transition-all"
     >
-      {/* Header with Back Button */}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6">
         <div className="flex items-center mb-4 sm:mb-0">
           <button
@@ -87,9 +87,9 @@ export default function ComplaintForm() {
         </button>
       </div>
 
-      {/* Complaint Form */}
+     
       <form onSubmit={handleSubmit} className="space-y-5">
-        {/* Description */}
+        {/* Description Field */}
         <div>
           <label className="block text-blue-900 dark:text-blue-300 font-semibold mb-1 text-sm sm:text-base">
             Description

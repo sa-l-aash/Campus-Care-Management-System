@@ -19,6 +19,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AdminStats from "./pages/AdminStats";
 import ResetPassword from "./pages/ResetPassword";
 
+// Import ToastContainer for notifications
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -34,6 +35,7 @@ const Layout = () => (
 
 export default function App() {
   return (
+
     <Router>
       <Routes>
         <Route path="/" element={<Navigate to="/auth" replace />} />

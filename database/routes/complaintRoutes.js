@@ -23,7 +23,7 @@ router.get("/", async (req, res) => {
 
 /**
  * POST /api/complaints
- * Submit a new complaint (with optional image)
+ * Submit a new complaint
  */
 router.post("/", upload.single("image"), async (req, res) => {
   try {

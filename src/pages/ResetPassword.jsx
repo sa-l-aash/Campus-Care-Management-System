@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 import { confirmPasswordReset } from "firebase/auth";
-
+// Handle password reset
 export default function ResetPassword() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -16,18 +16,18 @@ export default function ResetPassword() {
     e.preventDefault();
 
     if (newPassword !== confirmPassword) {
-      alert("❌ Passwords do not match!");
+      alert("Passwords do not match!");
       return;
     }
 
     try {
       setLoading(true);
       await confirmPasswordReset(auth, oobCode, newPassword);
-      alert("✅ Password reset successfully! Please log in.");
+      alert("Password reset successfully! Please log in.");
       navigate("/auth");
     } catch (err) {
       console.error(err);
-      alert(`❌ ${err.message}`);
+      alert(`${err.message}`);
     } finally {
       setLoading(false);
     }

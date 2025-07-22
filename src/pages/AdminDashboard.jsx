@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-
+// Our API base URL
 const API_BASE = "http://localhost:5000";
 
 export default function AdminDashboard() {
@@ -25,7 +25,7 @@ export default function AdminDashboard() {
       const data = await res.json();
       setReports(data);
     } catch (err) {
-      console.error("❌ Failed to fetch reports:", err);
+      console.error("Failed to fetch reports:", err);
     } finally {
       setLoadingReports(false);
     }
@@ -33,16 +33,16 @@ export default function AdminDashboard() {
 
   const fetchComplaints = async () => {
     try {
+      // Fetch complaints from the API
       const res = await fetch(`${API_BASE}/api/complaints`);
       const data = await res.json();
       setComplaints(data);
     } catch (err) {
-      console.error("❌ Failed to fetch complaints:", err);
+      console.error("Failed to fetch complaints:", err);
     } finally {
       setLoadingComplaints(false);
     }
   };
-
   const handleDeleteReport = async (id) => {
     if (window.confirm("Are you sure you want to delete this report?")) {
       await fetch(`${API_BASE}/api/reports/${id}`, { method: "DELETE" });
@@ -97,7 +97,7 @@ export default function AdminDashboard() {
       return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
     });
 
-  // 🔥 FIXED: Proper base64 image rendering
+  //FIXED: Proper base64 image rendering
   const renderImage = (image) => {
     if (!image?.data) return null;
 
@@ -108,7 +108,7 @@ export default function AdminDashboard() {
       );
       return `data:${image.contentType};base64,${base64String}`;
     } catch (err) {
-      console.error("⚠️ Error rendering image:", err);
+      console.error("Error rendering image:", err);
       return null;
     }
   };

@@ -103,7 +103,7 @@ router.get("/stats", async (req, res) => {
     const resolvedReports = await Report.countDocuments({ status: "resolved" });
     const pendingReports = await Report.countDocuments({ status: "pending" });
 
-    // Reports per week (last 6 weeks)
+    // Reports per week
     const last6Weeks = [...Array(6)].map((_, i) => {
       const start = new Date();
       start.setDate(start.getDate() - i * 7);

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { io } from "socket.io-client";
-
+//our API base URL
 const API_BASE = "http://localhost:5000";
+// Socket.io client for real-time updates
 const socket = io(API_BASE);
 
 export default function Home() {
@@ -24,19 +25,19 @@ export default function Home() {
       socket.off("newReport");
     };
   }, []);
-
+// Fetch reports from the API
   const fetchReports = async () => {
     try {
       const res = await fetch(`${API_BASE}/api/reports`);
       const data = await res.json();
       setReports(data);
     } catch (err) {
-      console.error("❌ Failed to fetch reports:", err);
+      console.error("Failed to fetch reports:", err);
     } finally {
       setLoading(false);
     }
   };
-
+// Filter reports based on search and status
   const filteredReports = reports.filter((report) => {
     const matchesSearch =
       report.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -55,7 +56,7 @@ export default function Home() {
           Recent Issue Reports
         </h2>
 
-        {/* 🔍 Search + Filter */}
+        {/* Search + Filter */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
           <input
             type="text"
@@ -76,7 +77,7 @@ export default function Home() {
           </select>
         </div>
 
-        {/* 🧾 Reports List */}
+        {/*Reports List */}
         {loading ? (
           <p className="text-center text-gray-600 dark:text-gray-400">
             Loading reports...

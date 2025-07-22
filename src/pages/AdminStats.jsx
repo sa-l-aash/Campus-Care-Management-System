@@ -28,6 +28,7 @@ export default function AdminStats() {
 
   const fetchStats = async () => {
     try {
+      // Fetch both report and complaint stats
       const [reportRes, complaintRes] = await Promise.all([
         fetch(`${API_BASE}/api/reports/stats`),
         fetch(`${API_BASE}/api/complaints/stats`),
@@ -39,13 +40,13 @@ export default function AdminStats() {
       setReportStats(reportData);
       setComplaintStats(complaintData);
     } catch (err) {
-      console.error("❌ Error fetching stats:", err);
+      console.error("Error fetching stats:", err);
     }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-100 dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-gray-100">
-      {/* ✅ Pass isStats prop to Navbar */}
+      {/*Pass isStats prop to Navbar */}
       <Navbar isStats />
 
       <div className="pt-24 px-4 sm:px-6 max-w-4xl mx-auto">
