@@ -16,7 +16,7 @@ export default function Navbar({ isAdmin = false, isStats = false }) {
       document.documentElement.classList.add("dark");
     }
   }, []);
-// Toggle dark mode
+
   const toggleDarkMode = () => {
     const newTheme = !darkMode;
     setDarkMode(newTheme);
@@ -25,15 +25,21 @@ export default function Navbar({ isAdmin = false, isStats = false }) {
   };
 
   const handleAdminClick = () => {
+    // Bypass PIN if coming from the stats page
+    if (location.pathname === "/admin/stats") {
+      navigate("/admin");
+      return;
+    }
+
     const pin = prompt("Enter Admin PIN:");
-    const correctPin = "1234"; 
+    const correctPin = "1234";
     if (pin === correctPin) {
       navigate("/admin");
     } else {
       alert("Incorrect PIN. Access denied.");
     }
   };
-// Handle menu selection
+
   const handleMenuSelect = (action) => {
     setMenuOpen(false);
     setMobileMenuOpen(false);
@@ -123,7 +129,6 @@ export default function Navbar({ isAdmin = false, isStats = false }) {
                     </button>
                   )}
 
-                  {/*Switch between Admin and Stats */}
                   {!isAdmin && !isOnAdminPage && !isOnStatsPage && (
                     <button
                       onClick={() => handleMenuSelect("admin")}
@@ -188,7 +193,6 @@ export default function Navbar({ isAdmin = false, isStats = false }) {
                     </button>
                   )}
 
-                  {/*Switch between Admin and Stats */}
                   {!isAdmin && !isOnAdminPage && !isOnStatsPage && (
                     <button
                       onClick={() => handleMenuSelect("admin")}
