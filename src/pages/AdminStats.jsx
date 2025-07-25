@@ -16,7 +16,7 @@ import {
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement);
 
-const API_BASE = "http://localhost:5000";
+const API_BASE = "https://campus-care-management-system.onrender.com";
 
 export default function AdminStats() {
   const [reportStats, setReportStats] = useState(null);

@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 // Our API base URL
-const API_BASE = "http://localhost:5000";
+const API_BASE = "https://campus-care-management-system.onrender.com";
+
 
 export default function ComplaintForm() {
   const navigate = useNavigate();

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { io } from "socket.io-client";
 //our API base URL
-const API_BASE = "http://localhost:5000";
+const API_BASE = "https://campus-care-management-system.onrender.com";
 // Socket.io client for real-time updates
 const socket = io(API_BASE);
 
