@@ -17,9 +17,10 @@ connectDB();
 
 // Middleware
 app.use(cors({
-  origin: process.env.CLIENT_URL || "*",
+  origin: ["https://campuscare-cac86.web.app", "http://localhost:3000"], // add all allowed frontends
   credentials: true,
 }));
+
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 
@@ -35,9 +36,12 @@ app.get("/", (req, res) => {
 // WebSocket setup (if needed)
 const io = new Server(server, {
   cors: {
-    origin: process.env.CLIENT_URL || "*",
+    origin: ["https://campuscare-cac86.web.app", "http://localhost:3000"],
+    methods: ["GET", "POST"],
+    credentials: true,
   },
 });
+
 app.set("io", io); // Accessible in routes
 
 io.on("connection", (socket) => {
