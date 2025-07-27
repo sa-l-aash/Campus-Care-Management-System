@@ -1,22 +1,50 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { io } from "socket.io-client";
-//our API base URL
+
+// API base URL and socket initialization
 const API_BASE = "https://campus-care-management-system.onrender.com";
-// Socket.io client for real-time updates
 const socket = io(API_BASE);
+
+// Image modal component
+const ImageModal = ({ src, onClose }) => {
+  if (!src) return null;
+  return (
+    <div
+      onClick={onClose}
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        zIndex: 999,
+        width: "100vw",
+        height: "100vh",
+        backgroundColor: "rgba(0,0,0,0.8)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <img
+        src={src}
+        alt="Enlarged"
+        style={{ maxWidth: "90%", maxHeight: "90%", borderRadius: "8px" }}
+      />
+    </div>
+  );
+};
 
 export default function Home() {
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
-
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [selectedImage, setSelectedImage] = useState(null); // For modal
 
   useEffect(() => {
     fetchReports();
 
-    // WebSocket real-time listener
+    // Real-time WebSocket updates
     socket.on("newReport", (newReport) => {
       setReports((prevReports) => [newReport, ...prevReports]);
     });
@@ -25,7 +53,7 @@ export default function Home() {
       socket.off("newReport");
     };
   }, []);
-// Fetch reports from the API
+
   const fetchReports = async () => {
     try {
       const res = await fetch(`${API_BASE}/api/reports`);
@@ -37,7 +65,7 @@ export default function Home() {
       setLoading(false);
     }
   };
-// Filter reports based on search and status
+
   const filteredReports = reports.filter((report) => {
     const matchesSearch =
       report.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -77,7 +105,7 @@ export default function Home() {
           </select>
         </div>
 
-        {/*Reports List */}
+        {/* Reports List */}
         {loading ? (
           <p className="text-center text-gray-600 dark:text-gray-400">
             Loading reports...
@@ -88,48 +116,64 @@ export default function Home() {
           </p>
         ) : (
           <div className="grid grid-cols-1 gap-4">
-            {filteredReports.map((report) => (
-              <div
-                key={report._id}
-                className="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-md border-l-4 border-purple-400 dark:border-purple-600 hover:shadow-lg transition"
-              >
-                <h3 className="text-lg font-bold text-purple-700 dark:text-purple-400">
-                  📌 {report.location}
-                </h3>
-                <p className="mt-2 text-gray-800 dark:text-gray-300">
-                  {report.description}
-                </p>
+            {filteredReports.map((report) => {
+              const imageSrc = report.image?.data
+                ? `data:${report.image.contentType};base64,${btoa(
+                    new Uint8Array(report.image.data.data).reduce(
+                      (acc, byte) => acc + String.fromCharCode(byte),
+                      ""
+                    )
+                  )}`
+                : null;
 
-                <p
-                  className={`text-sm font-medium mt-2 ${
-                    report.status === "resolved"
-                      ? "text-green-600 dark:text-green-400"
-                      : "text-yellow-600 dark:text-yellow-400"
-                  }`}
+              return (
+                <div
+                  key={report._id}
+                  className="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-md border-l-4 border-purple-400 dark:border-purple-600 hover:shadow-lg transition"
                 >
-                  {report.status === "resolved" ? "✅ Resolved" : "🟡 Pending"}
-                </p>
+                  <h3 className="text-lg font-bold text-purple-700 dark:text-purple-400">
+                    📌 {report.location}
+                  </h3>
+                  <p className="mt-2 text-gray-800 dark:text-gray-300">
+                    {report.description}
+                  </p>
 
-                {report.image?.data && (
-                  <img
-                    src={`data:${report.image.contentType};base64,${btoa(
-                      new Uint8Array(report.image.data.data).reduce(
-                        (acc, byte) => acc + String.fromCharCode(byte),
-                        ""
-                      )
-                    )}`}
-                    alt="Report"
-                    className="mt-3 w-full rounded-xl border object-cover max-h-60 dark:border-gray-700"
-                  />
-                )}
+                  <p
+                    className={`text-sm font-medium mt-2 ${
+                      report.status === "resolved"
+                        ? "text-green-600 dark:text-green-400"
+                        : "text-yellow-600 dark:text-yellow-400"
+                    }`}
+                  >
+                    {report.status === "resolved"
+                      ? "✅ Resolved"
+                      : "🟡 Pending"}
+                  </p>
 
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-                  ⏱ {new Date(report.createdAt).toLocaleString()}
-                </p>
-              </div>
-            ))}
+                  {/* Clickable Image */}
+                  {imageSrc && (
+                    <img
+                      src={imageSrc}
+                      alt="Report"
+                      onClick={() => setSelectedImage(imageSrc)}
+                      className="mt-3 w-full rounded-xl border object-cover max-h-60 dark:border-gray-700 cursor-pointer hover:opacity-90 transition"
+                    />
+                  )}
+
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                    ⏱ {new Date(report.createdAt).toLocaleString()}
+                  </p>
+                </div>
+              );
+            })}
           </div>
         )}
+
+        {/* Image Modal */}
+        <ImageModal
+          src={selectedImage}
+          onClose={() => setSelectedImage(null)}
+        />
       </div>
     </div>
   );
